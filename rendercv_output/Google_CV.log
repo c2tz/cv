@@ -1,7 +1,7 @@
-This is LuaHBTeX, Version 1.18.0 (MiKTeX 24.3) (format=lualatex 2024.3.24)  18 APR 2024 00:01
+This is LuaHBTeX, Version 1.18.0 (MiKTeX 24.3) (format=lualatex 2024.3.24)  25 APR 2024 11:33
  restricted system commands enabled.
-**C:/Users/c2tz/Desktop/cv/rendercv_output/Google_CV.tex
-(C:/Users/c2tz/Desktop/cv/rendercv_output/Google_CV.tex
+**C:/Users/c2tz/Desktop/cvv/rendercv_output/Google_CV.tex
+(C:/Users/c2tz/Desktop/cvv/rendercv_output/Google_CV.tex
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
 Lua module: luaotfload 2024-02-14 3.28 Lua based OpenType font support
@@ -1082,11 +1082,11 @@ Here is how much of LuaTeX's memory you used:
  1094 words of node memory still in use:
    7 hlist, 2 vlist, 2 rule, 17 glue, 4 kern, 1 penalty, 2 glyph, 130 attribute,
  94 glue_spec, 20 attribute_list, 1 write nodes
-   avail lists: 1:4,2:5096,3:756,4:225,5:2679,6:134,7:9098,8:9,9:800,10:7,11:657
+   avail lists: 1:6,2:5096,3:756,4:225,5:2673,6:134,7:9095,8:9,9:800,10:7,11:657
 
  45176 multiletter control sequences out of 65536+600000
  63 fonts using 6919455 bytes
- 79i,10n,89p,871b,1088s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 79i,10n,89p,872b,1088s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <./GoogleSans/GoogleSans-Italic.ttf><c:/users/c2tz/appdata/local/programs/miktex
 /fonts/opentype/public/fontawesome5/fontawesome5free-regular-400.otf><./GoogleSa
 ns/GoogleSans-Regular.ttf><c:/users/c2tz/appdata/local/programs/miktex/fonts/ope
@@ -1096,7 +1096,7 @@ nts/cm/cmmi10.pfb><C:/Users/c2tz/AppData/Local/Programs/MiKTeX/fonts/type1/publi
 c/amsfonts/cm/cmr10.pfb><C:/Users/c2tz/AppData/Local/Programs/MiKTeX/fonts/type1
 /public/amsfonts/cm/cmr7.pfb><C:/Users/c2tz/AppData/Local/Programs/MiKTeX/fonts/
 type1/public/amsfonts/cm/cmsy10.pfb>
-Output written on Google_CV.pdf (2 pages, 477245 bytes).
+Output written on Google_CV.pdf (2 pages, 477249 bytes).
 
 PDF statistics: 99 PDF objects out of 1000 (max. 8388607)
  9 named destinations out of 1000 (max. 131072)

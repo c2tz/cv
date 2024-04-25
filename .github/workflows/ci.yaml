@@ -1,0 +1,45 @@
+name: Build LaTeX document
+
+on:
+  push:
+    branches: [ "main" ]
+jobs:
+  build_latex:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Set up git repository
+    - uses: actions/checkout@v3
+
+    - name: Uploading artifact
+      uses: actions/upload-artifact@v3
+      with:
+          name: pdf
+          path: ./rendercv_output/*.pdf
+          retention-days: 3
+          
+    - name: Get time
+      id: time
+      uses: nanzm/get-time-action@v1.1
+      with:
+          timeZone: 1
+          format: 'YYYY.MM.DD.HH.mm.ss'
+    - name: Get date
+      id: date
+      uses: nanzm/get-time-action@v1.1
+      with:
+          timeZone: 1
+          format: 'YYYY-MM-DD'
+          
+    - name: Create release
+      id: create_release
+      uses: softprops/action-gh-release@v1
+      with:
+          name: cv compiled on ${{ steps.date.outputs.time }}
+          tag_name: v${{ steps.time.outputs.time }}
+          files: ./rendercv_output/*.pdf
+
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}

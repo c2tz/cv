@@ -2,7 +2,7 @@
 
 - Phone: +33 6 43 83 04 03
 - Email: [c2tz@pm.me](mailto:c2tz@pm.me)
-- Location: Artiguelouve
+- Location: Artiguelouv
 - Website: [yourwebsite.com](https://yourwebsite.com/)
 
 
