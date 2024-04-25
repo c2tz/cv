@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Set up git repository
-    - uses: actions/checkout@v3
+      uses: actions/checkout@v3
 
     - name: Uploading artifact
       uses: actions/upload-artifact@v3
