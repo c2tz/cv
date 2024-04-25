@@ -37,7 +37,6 @@ jobs:
           name: 'CV compiled from : ${{ steps.date.outputs.time }}'
           tag_name: v${{ steps.time.outputs.time }}
           files: ./rendercv_output/*.pdf
-          make_latest: true
           generate_release_notes: 'test'
 
     - name: Push changes
