@@ -34,9 +34,11 @@ jobs:
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-          name: 'CV compilé le : ${{ steps.date.outputs.time }}'
+          name: 'CV compiled from : ${{ steps.date.outputs.time }}'
           tag_name: v${{ steps.time.outputs.time }}
           files: ./rendercv_output/*.pdf
+          make_latest: true
+          generate_release_notes: 'test'
 
     - name: Push changes
       uses: ad-m/github-push-action@master
