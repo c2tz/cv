@@ -22,7 +22,7 @@ jobs:
       uses: nanzm/get-time-action@v1.1
       with:
           timeZone: 1
-          format: 'HH:mm:ss-DD.MM.YYYY'
+          format: 'HH.mm.ss-DD.MM.YYYY'
     - name: Get date
       id: date
       uses: nanzm/get-time-action@v1.1
