@@ -7,42 +7,48 @@ jobs:
   build_latex:
     runs-on: ubuntu-latest
     steps:
-    - name: Set up git repository
-      uses: actions/checkout@v3
+      - name: Set up git repository
+        uses: actions/checkout@v3
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
+        with:
+          root_file: "./rendercv_output/*.tex"
+          glob_root_file: true
+          latexmk_use_lualatex: true
 
-    - name: Uploading artifact
-      uses: actions/upload-artifact@v4
-      with:
+      - name: Uploading artifact
+        uses: actions/upload-artifact@v4
+        with:
           name: pdf
           path: ./rendercv_output/*.pdf
           retention-days: 3
           
-    - name: Get time
-      id: time
-      uses: nanzm/get-time-action@v1.1
-      with:
+      - name: Get time
+        id: time
+        uses: nanzm/get-time-action@v1.1
+        with:
           timeZone: 1
           format: 'HH.mm.ss-DD.MM.YYYY'
-    - name: Get date
-      id: date
-      uses: nanzm/get-time-action@v1.1
-      with:
+      - name: Get date
+        id: date
+        uses: nanzm/get-time-action@v1.1
+        with:
           timeZone: 1
           format: 'DD/MM/YYYY'
           
-    - name: Create release
-      id: create_release
-      uses: softprops/action-gh-release@v1
-      with:
+      - name: Create release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
           name: 'CV compiled from : ${{ steps.date.outputs.time }}'
           tag_name: v${{ steps.time.outputs.time }}
           files: ./rendercv_output/*.pdf
           generate_release_notes: 'test'
 
-    - name: Install ghostscript
-      run: sudo apt-get update --fix-missing && sudo apt install ghostscript
-    - name: Change ImageMagick security policy
-      run: |
+      - name: Install ghostscript
+        run: sudo apt-get update --fix-missing && sudo apt install ghostscript
+      - name: Change ImageMagick security policy
+        run: |
           DQT='"' 
           SRC="rights=${DQT}none${DQT} pattern=${DQT}PDF${DQT}"
           RPL="rights=${DQT}read\|write${DQT} pattern=${DQT}PDF${DQT}"
@@ -65,18 +71,18 @@ jobs:
           sudo sed -i "s/$MAP/$MAPR/" /etc/ImageMagick-6/policy.xml
           sudo sed -i "s/$MEM/$MEMR/" /etc/ImageMagick-6/policy.xml
           
-    - name: Convert pdf to png
-      run: convert -density 900 -background white -alpha off ./rendercv_output/*.pdf -resize 25% -quality 90 -colorspace RGB cv_preview_%d.png
+      - name: Convert pdf to png
+        run: convert -density 900 -background white -alpha off ./rendercv_output/*.pdf -resize 25% -quality 90 -colorspace RGB cv_preview_%d.png
         
-    - name: Commit png
-      id: commit
-      run: |
+      - name: Commit png
+        id: commit
+        run: |
           git config --local user.email "action[bot]@github.com"
           git config --local user.name "github-actions[bot]"
           git add *.png
           git commit -m "[bot] updated preview images."
-    - name: Push changes
-      uses: ad-m/github-push-action@master
-      with:
+      - name: Push changes
+        uses: ad-m/github-push-action@master
+        with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
