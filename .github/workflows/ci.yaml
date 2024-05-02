@@ -21,18 +21,18 @@ jobs:
         id: time
         uses: nanzm/get-time-action@master
         with:
-          timeZone: 2
+          timeZone: UTC+2
           format: 'YYYY.MM.DD.HH.mm.ss'
       - name: Get date
         id: date
         uses: nanzm/get-time-action@master
         with:
-          timeZone: 2
+          timeZone: UTC+2
           format: 'YYYY-MM-DD'
 
       - name: Create release
         id: create_release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@master
         with:
           name: ${{ steps.date.outputs.time }}
           tag_name: ${{ steps.time.outputs.time }}
