@@ -21,20 +21,20 @@ jobs:
         id: time
         uses: nanzm/get-time-action@master
         with:
-          timeZone: UTC+2
+          timeZone: 8
           format: 'YYYY.MM.DD.HH.mm.ss'
       - name: Get date
         id: date
         uses: nanzm/get-time-action@master
         with:
-          timeZone: UTC+2
+          timeZone: 8
           format: 'YYYY-MM-DD'
 
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@master
         with:
-          name: ${{ steps.date.outputs.time }}
+          name: CV from ${{ steps.date.outputs.time }}
           tag_name: ${{ steps.time.outputs.time }}
           files: ./rendercv_output/*.pdf
           body: |
