@@ -9,12 +9,6 @@ jobs:
     steps:
       - name: Set up git repository
         uses: actions/checkout@v3
-      - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v2
-        with:
-          root_file: "./rendercv_output/*.tex"
-          glob_root_file: true
-          latexmk_use_lualatex: true
 
       - name: Uploading artifact
         uses: actions/upload-artifact@v4
@@ -27,7 +21,7 @@ jobs:
         id: time
         uses: nanzm/get-time-action@v1.1
         with:
-          timeZone: 1
+          timeZone: 2
           format: 'HH.mm.ss-DD.MM.YYYY'
       - name: Get date
         id: date
@@ -43,7 +37,6 @@ jobs:
           name: 'CV compiled from : ${{ steps.date.outputs.time }}'
           tag_name: v${{ steps.time.outputs.time }}
           files: ./rendercv_output/*.pdf
-          generate_release_notes: 'test'
 
       - name: Install ghostscript
         run: sudo apt-get update --fix-missing && sudo apt install ghostscript
@@ -72,7 +65,7 @@ jobs:
           sudo sed -i "s/$MEM/$MEMR/" /etc/ImageMagick-6/policy.xml
           
       - name: Convert pdf to png
-        run: convert -density 900 -background white -alpha off ./rendercv_output/*.pdf -resize 25% -quality 90 -colorspace RGB cv_preview_%d.png
+        run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 25% -quality 70 cv_preview_%d.png
         
       - name: Commit png
         id: commit
