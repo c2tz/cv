@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Set up git repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Uploading artifact
         uses: actions/upload-artifact@v4
@@ -19,24 +19,21 @@ jobs:
           
       - name: Get time
         id: time
-        uses: nanzm/get-time-action@v1.1
+        uses: nanzm/get-time-action@latest
         with:
-          timeZone: 2
-          format: 'HH.mm.ss-DD.MM.YYYY'
-      - name: Get date
-        id: date
-        uses: nanzm/get-time-action@v1.1
-        with:
-          timeZone: 1
-          format: 'DD/MM/YYYY'
+          timeZone: UTC+2
+          format: 'YYYY-MM-DD-HH-mm-ss'
           
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
           name: 'CV compiled from : ${{ steps.date.outputs.time }}'
-          tag_name: v${{ steps.time.outputs.time }}
+          tag_name: Date :${{ steps.time.outputs.time }}
           files: ./rendercv_output/*.pdf
+          body: |
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque erat in blandit luctus. 
+            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
 
       - name: Install ghostscript
         run: sudo apt-get update --fix-missing && sudo apt install ghostscript
