@@ -23,23 +23,20 @@ jobs:
         with:
           timeZone: UTC+2
           format: 'YYYY.MM.DD.HH.mm.ss'
-        env:
-          TIME: "${{ steps.time.outputs.time }}"
+     
       - name: Get date
         id: date
         uses: nanzm/get-time-action@master
         with:
           timeZone: UTC+2
           format: 'YYYY-MM-DD'
-        env:
-          DATE: "${{ steps.date.outputs.time }}"
 
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@master
         with:
-          name: 'CV from : $DATE'
-          tag_name: $TIME
+          name: 'CV from : ${{ steps.time.outputs.time }}'
+          tag_name: "${{ steps.date.outputs.time }}"
           files: ./rendercv_output/*.pdf
           body: |
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque erat in blandit luctus. 
