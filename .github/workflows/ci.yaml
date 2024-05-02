@@ -19,7 +19,7 @@ jobs:
           
       - name: Get time
         id: time
-        uses: nanzm/get-time-action@latest
+        uses: nanzm/get-time-action@v2
         with:
           timeZone: UTC+2
           format: 'YYYY-MM-DD-HH-mm-ss'
