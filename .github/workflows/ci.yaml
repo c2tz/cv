@@ -20,15 +20,12 @@ jobs:
       - name: Get time
         id: time
         uses: nanzm/get-time-action@master
-        with:
-          timeZone: 2
-          format: 'YYYY-MM-DD-HH.mm.ss'
           
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@master
         with:
-          name: 'download cv from ${{ steps.time.outputs.time }}'
+          name: 'CV ${{ steps.time.outputs.time }}'
           tag_name: ${{ steps.time.outputs.time }}
           files: ./rendercv_output/*.pdf
           body: |
