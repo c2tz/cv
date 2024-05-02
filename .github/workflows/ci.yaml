@@ -19,13 +19,22 @@ jobs:
           
       - name: Get time
         id: time
-        uses: nanzm/get-time-action@master
-          
+        uses: nanzm/get-time-action@v1.1
+        with:
+          timeZone: 1
+          format: 'YYYY.MM.DD.HH.mm.ss'
+      - name: Get date
+        id: date
+        uses: nanzm/get-time-action@v1.1
+        with:
+          timeZone: 1
+          format: 'YYYY-MM-DD'
+
       - name: Create release
         id: create_release
-        uses: softprops/action-gh-release@master
+        uses: softprops/action-gh-release@v1
         with:
-          name: 'CV ${{ steps.time.outputs.time }}'
+          name: ${{ steps.date.outputs.time }}
           tag_name: ${{ steps.time.outputs.time }}
           files: ./rendercv_output/*.pdf
           body: |
