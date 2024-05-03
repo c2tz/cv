@@ -21,14 +21,14 @@ jobs:
         id: time
         uses: nanzm/get-time-action@master
         with:
-          timeZone: 0
+          timeZone: 2
           format: 'YYYY.MM.DD.HH.mm.ss'
      
       - name: Get date
         id: date
         uses: nanzm/get-time-action@master
         with:
-          timeZone: 0
+          timeZone: 2
           format: 'YYYY-MM-DD'
 
       - name: Create release
