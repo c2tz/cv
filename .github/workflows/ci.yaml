@@ -18,11 +18,12 @@ jobs:
           retention-days: 3
       # test timezone
       # Set the date time
-      - name: Retrieve current Date Time in Paris TimeZone (Full Format)
+      - name: Retrieve current Date Time in Singapore TimeZone (Full Format)
         shell: bash
         run: |
-          echo "START_TIME=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
-          echo "FULL_START_TIME=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
+          echo "START_TIME=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+          echo "FULL_START_TIME=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
+
 
       - name: Create release
         id: create_release
