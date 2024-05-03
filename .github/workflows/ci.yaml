@@ -16,31 +16,29 @@ jobs:
           name: pdf
           path: ./rendercv_output/*.pdf
           retention-days: 3
-          
+      # test timezone
+      # Set the date time
+      - name: Retrieve current Date Time in Singapore TimeZone
+        shell: bash
+        run: echo "START_TIME=$(TZ=":Europe/Paris" date -R|sed 's/.....$//')" >> $GITHUB_ENV
+        
       - name: Get time
         id: time
         uses: nanzm/get-time-action@master
         with:
           timeZone: 2
           format: 'YYYY.MM.DD.HH.mm.ss'
-     
-      - name: Get date
-        id: date
-        uses: nanzm/get-time-action@master
-        with:
-          timeZone: 2
-          format: 'YYYY-MM-DD'
 
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@master
         with:
-          name: 'CV from : ${{ steps.date.outputs.time }}'
-          tag_name: "${{ steps.time.outputs.time }}"
+          name: 'Download my CV'
+          tag_name: "${{ env.START_TIME }}"
           files: ./rendercv_output/*.pdf
           body: |
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque erat in blandit luctus. 
-            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
+            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices ${{ env.START_TIME }}
 
       - name: Install ghostscript
         run: sudo apt-get update --fix-missing && sudo apt install ghostscript
@@ -83,11 +81,6 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-      # test timezone
-      # Set the date time
-      - name: Retrieve current Date Time in Singapore TimeZone
-        shell: bash
-        run: echo "START_TIME=$(TZ=":Europe/Paris" date -R|sed 's/.....$//')" >> $GITHUB_ENV
 
       # Fetch the date time as Github ENV variable
       - name: print date
