@@ -28,7 +28,7 @@ jobs:
         id: date
         uses: nanzm/get-time-action@master
         with:
-          timeZone: UTC+2
+          timeZone: 0
           format: 'YYYY-MM-DD'
 
       - name: Create release
