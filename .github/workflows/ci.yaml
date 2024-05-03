@@ -26,14 +26,6 @@ jobs:
           echo "START_TIME=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
           echo "FULL_START_TIME=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
 
-        
-      - name: Get time
-        id: time
-        uses: nanzm/get-time-action@master
-        with:
-          timeZone: 2
-          format: 'YYYY.MM.DD.HH.mm.ss'
-
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@master
