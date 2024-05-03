@@ -21,7 +21,7 @@ jobs:
         id: time
         uses: nanzm/get-time-action@master
         with:
-          timeZone: UTC+2
+          timeZone: 0
           format: 'YYYY.MM.DD.HH.mm.ss'
      
       - name: Get date
