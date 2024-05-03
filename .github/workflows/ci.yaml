@@ -20,7 +20,12 @@ jobs:
       # Set the date time
       - name: Retrieve current Date Time in Singapore TimeZone
         shell: bash
-        run: echo "START_TIME=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+      - name: Retrieve current Date Time in Singapore TimeZone (Full Format)
+        shell: bash
+        run: |
+          echo "START_TIME=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+          echo "FULL_START_TIME=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
+
         
       - name: Get time
         id: time
