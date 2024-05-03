@@ -33,8 +33,7 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@master
         with:
-          name: 'Download my CV'
-          tag_name: "${{ env.START_TIME }}"
+          name: '${{ env.START_TIME }}'
           files: ./rendercv_output/*.pdf
           body: |
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque erat in blandit luctus. 
