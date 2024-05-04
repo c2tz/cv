@@ -21,8 +21,9 @@ jobs:
       - name: Retrieve current Date Time in Singapore TimeZone (Full Format)
         shell: bash
         run: |
-          echo "START_TIME=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+          echo "START_TIME=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d-%H.%M.%S')" >> $GITHUB_ENV
           echo "FULL_START_TIME=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
+          echo "START_TIME_TAG=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y %m %d')" >> $GITHUB_ENV
 
 
       - name: Create release
@@ -30,10 +31,11 @@ jobs:
         uses: softprops/action-gh-release@master
         with:
           name: '${{ env.START_TIME }}'
+          tag_name: '${{ env.START_TIME_TAG }}'
           files: ./rendercv_output/*.pdf
           body: |
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque erat in blandit luctus. 
-            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices ${{ env.START_TIME }}
+            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices ${{ env.FULL_START_TIME }}
 
       - name: Install ghostscript
         run: sudo apt-get update --fix-missing && sudo apt install ghostscript
@@ -76,7 +78,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
-
-      # Fetch the date time as Github ENV variable
-      - name: print date
-        run: echo ${{ env.START_TIME }}
