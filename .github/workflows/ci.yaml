@@ -23,7 +23,7 @@ jobs:
         run: |
           echo "START_TIME=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d-%H.%M.%S')" >> $GITHUB_ENV
           echo "FULL_START_TIME=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
-          echo "START_TIME_TAG=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y %m %d')" >> $GITHUB_ENV
+          echo "START_TIME_TAG=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d')" >> $GITHUB_ENV
 
 
       - name: Create release
