@@ -23,8 +23,8 @@ jobs:
       - name: Set Environment Variables
         run: |
           echo "CHANGELOG=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
-          echo "NAME=$(TZ=":Europe/Paris" date +'%Y.%m.%d')" >> $GITHUB_ENV
-          echo "TAG=$(TZ=":Europe/Paris" date +'%H.%M.%S')" >> $GITHUB_ENV
+          echo "NAME=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+          echo "TAG=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@master
@@ -33,9 +33,14 @@ jobs:
           tag_name: '${{ env.TAG }}'
           files: ./rendercv_output/*.pdf
           body: |
-            CV updated on ${{ env.CHANGELOG }}.
+            CV updated on **${{ env.CHANGELOG }}**.
+            
             You can download the latest version by [clicking here](https://github.com/c2tz/cvv/blob/main/rendercv_output/Google_CV.pdf).
-            Note: The compilation date indicated on the CV may be slightly different.
+            
+            ### Notes : 
+            The build date indicated on the CV and the release date may be slightly different because there is a delay between the time I generate my CV (locally) and the time I publish it on GitHub.
+            Version and tag names are generated automatically based on the commit date and time and are not used for version management purposes.
+            I don't use the change log here to keep you informed of any changes I make. To find out more about this, see the [commit history](https://github.com/c2tz/cvv/commits/main/).
 
       - name: Update Packages
         run: sudo apt-get update --fix-missing && sudo apt install ghostscript
