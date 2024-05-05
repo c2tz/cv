@@ -1,4 +1,4 @@
-name: Push LaTeX CV
+name: Validate and process static files
 
 on:
   push:
@@ -6,74 +6,64 @@ on:
     paths:
       - 'myCV.yaml' #exemple
       - '.github/**'
+      
 jobs:
-  cv:
+  static:
     runs-on: ubuntu-latest
     steps:
-      - name: Set up git repository
-        uses: actions/checkout@v4
-
-      - name: Uploading artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: pdf
-          path: ./rendercv_output/*.pdf
-          retention-days: 7
+        - uses: actions/checkout@v4
+        - uses: actions/upload-artifact@v4
+          with:
+            name: CV.pdf
+            path: ./rendercv_output/*.pdf
+            retention-days: 7
           
-      - name: Add Europe/Paris TZ to GitHub ENV
-        shell: bash
-        run: |
-          echo "CHANGELOG=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
-          echo "NAME=$(TZ=":Europe/Paris" date +'%Y.%m.%d')" >> $GITHUB_ENV
-          echo "TAG=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
-
-      - name: Create release
-        id: create_release
-        uses: softprops/action-gh-release@master
-        with:
-          name: '${{ env.NAME }}'
-          tag_name: '${{ env.TAG }}'
-          files: ./rendercv_output/*.pdf
-          body: |
-            CV updated on ${{ env.CHANGELOG }}.
-            You can download the lastest version by [clicking here](https://github.com/c2tz/cvv/blob/main/rendercv_output/Google_CV.pdf).
-            Note: The compilation date indicated on the CV may be slightly different.
-
-      - name: Install ghostscript
-        run: sudo apt-get update --fix-missing && sudo apt install ghostscript
+        - shell: bash
+        - run: |
+            echo "CHANGELOG=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
+            echo "NAME=$(TZ=":Europe/Paris" date +'%Y.%m.%d')" >> $GITHUB_ENV
+            echo "TAG=$(TZ=":Europe/Paris" date +'%H.%M.%S')" >> $GITHUB_ENV
+            
+        - id: create_release
+        - uses: softprops/action-gh-release@master
+          with:
+            name: '${{ env.NAME }}'
+            tag_name: '${{ env.TAG }}'
+            files: ./rendercv_output/*.pdf
+            body: |
+              CV updated on ${{ env.CHANGELOG }}.
+              You can download the lastest version by [clicking here](https://github.com/c2tz/cvv/blob/main/rendercv_output/Google_CV.pdf).
+              Note: The compilation date indicated on the CV may be slightly different.
+              
+        - run: sudo apt-get update --fix-missing && sudo apt install ghostscript
+        - run: |
+           	DQT='"' 
+           	SRC="rights=${DQT}none${DQT} pattern=${DQT}PDF${DQT}"
+           	RPL="rights=${DQT}read\|write${DQT} pattern=${DQT}PDF${DQT}"
+           	HGT="name=${DQT}height${DQT} value=${DQT}10KP${DQT}"
+           	HGTR="name=${DQT}height${DQT} value=${DQT}128Kp${DQT}"
+           	WDT="name=${DQT}width${DQT} value=${DQT}10KP${DQT}"
+           	WDTR="name=${DQT}width${DQT} value=${DQT}128Kp${DQT}"
+           	MAP="name=${DQT}map${DQT} value=${DQT}512MiB${DQT}"
+           	MAPR="name=${DQT}map${DQT} value=${DQT}4GiB${DQT}"
+           	MEM="name=${DQT}memory${DQT} value=${DQT}256MiB${DQT}"
+           	MEMR="name=${DQT}memory${DQT} value=${DQT}2GiB${DQT}"
+           	sudo sed -i "s/$SRC/$RPL/" /etc/ImageMagick-6/policy.xml
+           	sudo sed -i "s/$HGT/$HGTR/" /etc/ImageMagick-6/policy.xml
+           	sudo sed -i "s/$WDT/$WDTR/" /etc/ImageMagick-6/policy.xml
+           	sudo sed -i "s/$MAP/$MAPR/" /etc/ImageMagick-6/policy.xml
+           	sudo sed -i "s/$MEM/$MEMR/" /etc/ImageMagick-6/policy.xml
+          
+        - run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 25% -quality 50 cv_preview_%d.png
         
-      - name: Change ImageMagick security policy
-        run: |
-          DQT='"' 
-          SRC="rights=${DQT}none${DQT} pattern=${DQT}PDF${DQT}"
-          RPL="rights=${DQT}read\|write${DQT} pattern=${DQT}PDF${DQT}"
-          HGT="name=${DQT}height${DQT} value=${DQT}10KP${DQT}"
-          HGTR="name=${DQT}height${DQT} value=${DQT}128Kp${DQT}"
-          WDT="name=${DQT}width${DQT} value=${DQT}10KP${DQT}"
-          WDTR="name=${DQT}width${DQT} value=${DQT}128Kp${DQT}"
-          MAP="name=${DQT}map${DQT} value=${DQT}512MiB${DQT}"
-          MAPR="name=${DQT}map${DQT} value=${DQT}4GiB${DQT}"
-          MEM="name=${DQT}memory${DQT} value=${DQT}256MiB${DQT}"
-          MEMR="name=${DQT}memory${DQT} value=${DQT}2GiB${DQT}"
-          sudo sed -i "s/$SRC/$RPL/" /etc/ImageMagick-6/policy.xml
-          sudo sed -i "s/$HGT/$HGTR/" /etc/ImageMagick-6/policy.xml
-          sudo sed -i "s/$WDT/$WDTR/" /etc/ImageMagick-6/policy.xml
-          sudo sed -i "s/$MAP/$MAPR/" /etc/ImageMagick-6/policy.xml
-          sudo sed -i "s/$MEM/$MEMR/" /etc/ImageMagick-6/policy.xml
+        - id: commit_png
+        - run: |
+           git config --local user.email "action[bot]@github.com"
+           git config --local user.name "github-actions"
+           git add *.png
+           git commit -m "docs: updated preview images"
           
-      - name: Convert pdf to png
-        run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 25% -quality 50 cv_preview_%d.png
-        
-      - name: Commit png
-        id: commit_png
-        run: |
-          git config --local user.email "action[bot]@github.com"
-          git config --local user.name "github-actions"
-          git add *.png
-          git commit -m "docs: updated preview images"
-          
-      - name: Push changes
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+        - uses: ad-m/github-push-action@master
+          with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: ${{ github.ref }}
