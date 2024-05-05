@@ -15,14 +15,13 @@ jobs:
         with:
           name: CV.pdf
           path: ./rendercv_output/*.pdf
-          retention-days: 7
+          retention-days: 3
 
       - name: Set Environment Variables
         run: |
           echo "CHANGELOG=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
           echo "NAME=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
           echo "TAG=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
-
       - name: Create GitHub Release
         uses: softprops/action-gh-release@master
         with:
@@ -37,40 +36,37 @@ jobs:
             The build date indicated on the CV and the release date may be slightly different because there is a delay between the time I generate my CV (locally) and the time I publish it on GitHub.
             Version and tag names are generated automatically based on the commit date and time, there aren't used for version management purposes.
             I don't use the changelog here to keep you informed of any changes I make. To find out more about this, see the [commit history](https://github.com/c2tz/cvv/commits/main/).
-
       - name: Update Packages
         run: sudo apt-get update --fix-missing && sudo apt install ghostscript
 
       - name: Modify ImageMagick Policy
         run: |
           sudo sed -i 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/; s/name="height" value="10KP"/name="height" value="128Kp"/; s/name="width" value="10KP"/name="width" value="128Kp"/; s/name="map" value="512MiB"/name="map" value="4GiB"/; s/name="memory" value="256MiB"/name="memory" value="2GiB"/' /etc/ImageMagick-6/policy.xml
-
       - name: Convert PDF to PNG
         run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 25% -quality 50 cv_preview_%d.png
 
-      - name: Recreate README.md
-        run: |
-          rm -f README.md
-          echo "Welcome to my CV repository! You can find the latest version of my CV [here](https://github.com/c2tz/cvv/blob/main/rendercv_output/Google_CV.pdf)." > README.md
-          echo "" >> README.md  # Ajouter une ligne vide comme séparation
-          echo "# For more information, visit [Google](https://www.google.com)." >> README.md
-          echo "![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)" >> README.md
-          echo "Test" >> README.md
-          
       - name: Commit PNG Files
         run: |
           git config --local user.email "action[bot]@github.com"
           git config --local user.name "github-actions[bot]"
-          git add *.png 
+          git add *.png
           git commit -m "docs(bot): updated preview images"
-
+      - name: Remove existing README.md
+        run: |
+          rm -f README.md
+      - name: Create new README.md
+        run: |
+          echo "Welcome to my CV repository!" > README.md
+          echo "" >> README.md  # Ajouter une ligne vide comme séparation
+          echo "You can [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf)." >> README.md
+          echo "![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)" >> README.md
+          echo "Test" >> README.md
       - name: Commit README.md
         run: |
           git config --local user.email "action[bot]@github.com"
           git config --local user.name "github-actions[bot]"
           git add README.md
           git commit -m "docs(bot): updated README file with new content"
-
       - name: Push Changes to GitHub
         uses: ad-m/github-push-action@master
         with:
