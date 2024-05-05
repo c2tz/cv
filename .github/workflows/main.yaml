@@ -55,7 +55,7 @@ jobs:
           git add *.png
           git commit -m "docs: updated preview images"
 
-      - name: Append link to README.md
+      - name: Overwrite README.md with new content
         run: |
           echo -e "\nFor more information, visit [Google](https://www.google.com)." >> README.md
           echo -e "![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)" >> README.md
