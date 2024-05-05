@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v4
+        
         - uses: actions/upload-artifact@v4
           with:
             name: CV.pdf
@@ -36,6 +37,7 @@ jobs:
               Note: The compilation date indicated on the CV may be slightly different.
               
         - run: sudo apt-get update --fix-missing && sudo apt install ghostscript
+        
         - run: |
            DQT='"'
            SRC="rights=${DQT}none${DQT} pattern=${DQT}PDF${DQT}"
