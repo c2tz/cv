@@ -4,49 +4,58 @@ on:
     paths:
       - 'myCV.yaml' #exemple
       - '.github/**'
-      
+
 jobs:
-  static:
+  cv_processing:
+    name: Process and Update CV Files
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        
-      - uses: actions/upload-artifact@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Upload CV Artifact
+        uses: actions/upload-artifact@v4
         with:
           name: CV.pdf
           path: ./rendercv_output/*.pdf
           retention-days: 7
-          
-      - run: |
+
+      - name: Set Environment Variables
+        run: |
           echo "CHANGELOG=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
           echo "NAME=$(TZ=":Europe/Paris" date +'%Y.%m.%d')" >> $GITHUB_ENV
           echo "TAG=$(TZ=":Europe/Paris" date +'%H.%M.%S')" >> $GITHUB_ENV
-            
-      - uses: softprops/action-gh-release@master
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@master
         with:
           name: '${{ env.NAME }}'
           tag_name: '${{ env.TAG }}'
           files: ./rendercv_output/*.pdf
           body: |
             CV updated on ${{ env.CHANGELOG }}.
-            You can download the lastest version by [clicking here](https://github.com/c2tz/cvv/blob/main/rendercv_output/Google_CV.pdf).
+            You can download the latest version by [clicking here](https://github.com/c2tz/cvv/blob/main/rendercv_output/Google_CV.pdf).
             Note: The compilation date indicated on the CV may be slightly different.
-              
-      - run: sudo apt-get update --fix-missing && sudo apt install ghostscript
-        
-      - run: |
+
+      - name: Update Packages
+        run: sudo apt-get update --fix-missing && sudo apt install ghostscript
+
+      - name: Modify ImageMagick Policy
+        run: |
           sudo sed -i 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/; s/name="height" value="10KP"/name="height" value="128Kp"/; s/name="width" value="10KP"/name="width" value="128Kp"/; s/name="map" value="512MiB"/name="map" value="4GiB"/; s/name="memory" value="256MiB"/name="memory" value="2GiB"/' /etc/ImageMagick-6/policy.xml
 
-          
-      - run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 25% -quality 50 cv_preview_%d.png
-        
-      - run: |
-           git config --local user.email "action[bot]@github.com"
-           git config --local user.name "github-actions"
-           git add *.png
-           git commit -m "docs: updated preview images"
-          
-      - uses: ad-m/github-push-action@master
+      - name: Convert PDF to PNG
+        run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 25% -quality 50 cv_preview_%d.png
+
+      - name: Commit PNG Files
+        run: |
+          git config --local user.email "action[bot]@github.com"
+          git config --local user.name "github-actions"
+          git add *.png
+          git commit -m "docs: updated preview images"
+
+      - name: Push Changes to GitHub
+        uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           branch: ${{ github.ref }}
