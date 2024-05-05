@@ -35,7 +35,8 @@ jobs:
           tag_name: '${{ env.TAG }}'
           files: ./rendercv_output/*.pdf
           body: |
-            CV updated on ${{ env.CHANGELOG }}
+            CV updated on ${{ env.CHANGELOG }}.
+            You can download the lastest version by [clicking here](https://www.google.com).
             Note: The compilation date indicated on the CV may be slightly different.
 
       - name: Install ghostscript
