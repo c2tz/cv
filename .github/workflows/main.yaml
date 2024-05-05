@@ -55,18 +55,23 @@ jobs:
           git add *.png
           git commit -m "docs: updated preview images"
 
-      - name: Overwrite README.md with new content
+      - name: Remove existing README.md
         run: |
-          echo -e "\nFor more information, visit [Google](https://www.google.com)." >> README.md
-          echo -e "![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)" >> README.md
-          echo -e "Test" >> README.md
+          rm -f README.md
+
+      - name: Create new README.md
+        run: |
+          echo "Welcome to my CV repository! You can find the latest version of my CV [here](https://github.com/c2tz/cvv/blob/main/rendercv_output/Google_CV.pdf)." > README.md
+          echo "For more information, visit [Google](https://www.google.com)." >> README.md
+          echo "![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)" >> README.md
+          echo "Test" >> README.md
 
       - name: Commit README.md
         run: |
           git config --local user.email "action[bot]@github.com"
           git config --local user.name "github-actions"
           git add README.md
-          git commit -m "docs: added README file with link to Google"
+          git commit -m "docs: updated README file with new content"
 
       - name: Push Changes to GitHub
         uses: ad-m/github-push-action@master
