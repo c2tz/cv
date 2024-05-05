@@ -1,10 +1,13 @@
-name: Build LaTeX document
+name: Push LaTeX CV
 
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - 'myCV.yaml' #exemple
+      - '.github/**'
 jobs:
-  build_latex:
+  push_cv:
     runs-on: ubuntu-latest
     steps:
       - name: Set up git repository
@@ -15,48 +18,42 @@ jobs:
         with:
           name: pdf
           path: ./rendercv_output/*.pdf
-          retention-days: 3
-      # test timezone
-      # Set the date time
-      - name: Retrieve current Date Time in Singapore TimeZone (Full Format)
+          retention-days: 7
+          
+      - name: Add Europe/Paris TZ to GitHub ENV
         shell: bash
         run: |
-          echo "START_TIME=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d-%H.%M.%S')" >> $GITHUB_ENV
-          echo "FULL_START_TIME=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
-          echo "START_TIME_TAG=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d')" >> $GITHUB_ENV
-
+          echo "CHANGELOG=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
+          echo "RELEASE=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d-%H.%M.%S')" >> $GITHUB_ENV
+          echo "TAG=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d')" >> $GITHUB_ENV
 
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@master
         with:
-          name: '${{ env.START_TIME }}'
-          tag_name: '${{ env.START_TIME_TAG }}'
+          name: '${{ env.RELEASE }}'
+          tag_name: '${{ env.TAG }}'
           files: ./rendercv_output/*.pdf
           body: |
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris pellentesque erat in blandit luctus. 
-            Vestibulum ante ipsum primis in faucibus orci luctus et ultrices ${{ env.FULL_START_TIME }}
+            CV updated on: ${ env.CHANGELOG }}.
+            Note: The compilation date indicated on the CV may be slightly different.
 
       - name: Install ghostscript
         run: sudo apt-get update --fix-missing && sudo apt install ghostscript
+        
       - name: Change ImageMagick security policy
         run: |
           DQT='"' 
           SRC="rights=${DQT}none${DQT} pattern=${DQT}PDF${DQT}"
           RPL="rights=${DQT}read\|write${DQT} pattern=${DQT}PDF${DQT}"
-          
           HGT="name=${DQT}height${DQT} value=${DQT}10KP${DQT}"
           HGTR="name=${DQT}height${DQT} value=${DQT}128Kp${DQT}"
-          
           WDT="name=${DQT}width${DQT} value=${DQT}10KP${DQT}"
           WDTR="name=${DQT}width${DQT} value=${DQT}128Kp${DQT}"
-          
           MAP="name=${DQT}map${DQT} value=${DQT}512MiB${DQT}"
           MAPR="name=${DQT}map${DQT} value=${DQT}4GiB${DQT}"
-          
           MEM="name=${DQT}memory${DQT} value=${DQT}256MiB${DQT}"
           MEMR="name=${DQT}memory${DQT} value=${DQT}2GiB${DQT}"
-          
           sudo sed -i "s/$SRC/$RPL/" /etc/ImageMagick-6/policy.xml
           sudo sed -i "s/$HGT/$HGTR/" /etc/ImageMagick-6/policy.xml
           sudo sed -i "s/$WDT/$WDTR/" /etc/ImageMagick-6/policy.xml
@@ -64,15 +61,16 @@ jobs:
           sudo sed -i "s/$MEM/$MEMR/" /etc/ImageMagick-6/policy.xml
           
       - name: Convert pdf to png
-        run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 25% -quality 70 cv_preview_%d.png
+        run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 25% -quality 50 cv_preview_%d.png
         
       - name: Commit png
         id: commit
         run: |
           git config --local user.email "action[bot]@github.com"
-          git config --local user.name "github-actions[bot]"
+          git config --local user.name "github-actions"
           git add *.png
-          git commit -m "[bot] updated preview images."
+          git commit -m "docs: updated preview images"
+          
       - name: Push changes
         uses: ad-m/github-push-action@master
         with:
