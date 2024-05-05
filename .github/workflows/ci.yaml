@@ -36,8 +36,10 @@ jobs:
               Note: The compilation date indicated on the CV may be slightly different.
               
         - run: sudo apt-get update --fix-missing && sudo apt install ghostscript
+        
         - run: |
-           	DQT='"' 
+           	DQT='"'
+            
            	SRC="rights=${DQT}none${DQT} pattern=${DQT}PDF${DQT}"
            	RPL="rights=${DQT}read\|write${DQT} pattern=${DQT}PDF${DQT}"
            	HGT="name=${DQT}height${DQT} value=${DQT}10KP${DQT}"
@@ -48,6 +50,7 @@ jobs:
            	MAPR="name=${DQT}map${DQT} value=${DQT}4GiB${DQT}"
            	MEM="name=${DQT}memory${DQT} value=${DQT}256MiB${DQT}"
            	MEMR="name=${DQT}memory${DQT} value=${DQT}2GiB${DQT}"
+            
            	sudo sed -i "s/$SRC/$RPL/" /etc/ImageMagick-6/policy.xml
            	sudo sed -i "s/$HGT/$HGTR/" /etc/ImageMagick-6/policy.xml
            	sudo sed -i "s/$WDT/$WDTR/" /etc/ImageMagick-6/policy.xml
