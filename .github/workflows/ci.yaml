@@ -7,7 +7,7 @@ on:
       - 'myCV.yaml' #exemple
       - '.github/**'
 jobs:
-  push_cv:
+  cv:
     runs-on: ubuntu-latest
     steps:
       - name: Set up git repository
@@ -31,12 +31,12 @@ jobs:
         id: create_release
         uses: softprops/action-gh-release@master
         with:
-          name: '${{ env.RELEASE }}'
-          tag_name: '${{ env.TAG }}'
+         # name: '${{ env.RELEASE }}'
+          tag_name: '${{ env.RELEASE }}'
           files: ./rendercv_output/*.pdf
           body: |
             CV updated on ${{ env.CHANGELOG }}.
-            You can download the lastest version by [clicking here](https://www.google.com).
+            You can download the lastest version by [clicking here](https://github.com/c2tz/cvv/blob/main/rendercv_output/Google_CV.pdf).
             Note: The compilation date indicated on the CV may be slightly different.
 
       - name: Install ghostscript
@@ -65,7 +65,7 @@ jobs:
         run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 25% -quality 50 cv_preview_%d.png
         
       - name: Commit png
-        id: commit
+        id: commit_png
         run: |
           git config --local user.email "action[bot]@github.com"
           git config --local user.name "github-actions"
