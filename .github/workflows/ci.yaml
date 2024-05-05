@@ -23,7 +23,7 @@ jobs:
       - name: Add Europe/Paris TZ to GitHub ENV
         shell: bash
         run: |
-          echo "CHANGELOG=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
+          echo "CHANGELOG=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%A, %d %B %Y %T %Z.')" >> $GITHUB_ENV
           echo "RELEASE=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d-%H.%M.%S')" >> $GITHUB_ENV
           echo "TAG=$(TZ=":Europe/Paris" LC_TIME="fr_FR.UTF-8" date +'%Y.%m.%d')" >> $GITHUB_ENV
 
@@ -35,7 +35,7 @@ jobs:
           tag_name: '${{ env.TAG }}'
           files: ./rendercv_output/*.pdf
           body: |
-            CV updated on: ${ env.CHANGELOG }}.
+            CV updated on: ${ env.CHANGELOG }}
             Note: The compilation date indicated on the CV may be slightly different.
 
       - name: Install ghostscript
