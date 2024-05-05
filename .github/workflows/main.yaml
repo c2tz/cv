@@ -56,7 +56,16 @@ jobs:
           git commit -m "docs: updated preview images"
 
       - name: Append link to README.md
-        run: echo -e "\nFor more information, visit [Google](https://www.google.com)." >> README.md
+        run: |
+          echo -e "\nFor more information, visit [Google](https://www.google.com)." >> README.md
+          echo -e "![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)" >> README.md
+          echo -e "Test" >> README.md
+
+      - name: Commit README.md
+        run: |
+          git add README.md
+          git commit -m "docs: added additional information to README file"
+
 
       - name: Commit README.md
         run: |
