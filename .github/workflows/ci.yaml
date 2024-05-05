@@ -35,8 +35,7 @@ jobs:
           tag_name: '${{ env.TAG }}'
           files: ./rendercv_output/*.pdf
           body: |
-            CV updated on echo $TAG
-            "C’est ma chaîne ${{ env.TAG }}"
+            CV updated on ${{ env.TAG }}
             Note: The compilation date indicated on the CV may be slightly different.
 
       - name: Install ghostscript
