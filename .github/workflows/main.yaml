@@ -62,9 +62,11 @@ jobs:
       - name: Create new README.md
         run: |
           echo "Welcome to my CV repository! You can find the latest version of my CV [here](https://github.com/c2tz/cvv/blob/main/rendercv_output/Google_CV.pdf)." > README.md
-          echo "For more information, visit [Google](https://www.google.com)." >> README.md
+          echo "" >> README.md  # Ajouter une ligne vide comme séparation
+          echo "# For more information, visit [Google](https://www.google.com)." >> README.md
           echo "![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)" >> README.md
           echo "Test" >> README.md
+
 
       - name: Commit README.md
         run: |
