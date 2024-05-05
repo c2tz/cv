@@ -1,14 +1,11 @@
-on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - 'myCV.yaml' #exemple
-      - '.github/**'
+name: Process and Update CV Files
+
+on: [pull_request, push]
 
 jobs:
   cv_processing:
-    name: Process and Update CV Files
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -34,8 +31,7 @@ jobs:
           files: ./rendercv_output/*.pdf
           body: |
             CV updated on **${{ env.CHANGELOG }}**.
-            
-            You can download the latest version by [clicking here](https://github.com/c2tz/cvv/blob/main/rendercv_output/Google_CV.pdf).
+            You can download the latest version by [clicking here](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf).
             
             ### Notes : 
             The build date indicated on the CV and the release date may be slightly different because there is a delay between the time I generate my CV (locally) and the time I publish it on GitHub.
