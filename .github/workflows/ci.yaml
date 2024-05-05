@@ -24,8 +24,8 @@ jobs:
         shell: bash
         run: |
           echo "CHANGELOG=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
-          echo "TAG=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
           echo "RELEASE=$(TZ=":Europe/Paris" date +'%Y.%m.%d')" >> $GITHUB_ENV
+          echo "TAG=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
 
       - name: Create release
         id: create_release
@@ -35,7 +35,7 @@ jobs:
           tag_name: '${{ env.TAG }}'
           files: ./rendercv_output/*.pdf
           body: |
-            CV updated on ${{ env.TAG }}
+            CV updated on ${{ env.CHANGELOG }}
             Note: The compilation date indicated on the CV may be slightly different.
 
       - name: Install ghostscript
