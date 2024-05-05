@@ -24,15 +24,15 @@ jobs:
         shell: bash
         run: |
           echo "CHANGELOG=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
-          echo "RELEASE=$(TZ=":Europe/Paris" date +'%Y.%m.%d')" >> $GITHUB_ENV
+          echo "NAME=$(TZ=":Europe/Paris" date +'%Y.%m.%d')" >> $GITHUB_ENV
           echo "TAG=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
 
       - name: Create release
         id: create_release
         uses: softprops/action-gh-release@master
         with:
-         # name: '${{ env.RELEASE }}'
-          tag_name: '${{ env.RELEASE }}'
+          name: '${{ env.NAME }}'
+          tag_name: '${{ env.TAG }}'
           files: ./rendercv_output/*.pdf
           body: |
             CV updated on ${{ env.CHANGELOG }}.
