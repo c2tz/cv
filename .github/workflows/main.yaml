@@ -6,6 +6,9 @@ jobs:
   cv_processing:
     runs-on: ubuntu-latest
     needs: [set_env_variables_job, update_packages_job, modify_policy_and_convert_job, commit_png_files_job, create_github_release_job]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
   set_env_variables_job:
     runs-on: ubuntu-latest
@@ -56,41 +59,4 @@ jobs:
           files: ./rendercv_output/*.pdf
           body: |
             CV updated on **${{ env.CHANGELOG }}**.
-            You can download the latest version by [clicking here](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf).
-
-  update_readme_job:
-    runs-on: ubuntu-latest
-    needs: [commit_png_files_job, create_github_release_job]
-    steps:
-      - name: Remove existing README.md
-        run: rm -f README.md
-      - name: Create new README.md
-        run: |
-          echo "Welcome to my CV repository!" > README.md
-          echo "| Preview 1 | Preview 2 |" >> README.md
-          echo "|:---:|:---:|" >> README.md
-          echo "| ![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png) | ![Sb2nov Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_1.png) |" >> README.md
-          echo "" >> README.md  # Ajouter une ligne vide comme séparation
-          echo "You can [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf)." >> README.md
-          echo "Test" >> README.md
-
-  commit_readme_job:
-    runs-on: ubuntu-latest
-    needs: [update_readme_job]
-    steps:
-      - name: Commit README.md
-        run: |
-          git config --local user.email "action[bot]@github.com"
-          git config --local user.name "github-actions[bot]"
-          git add README.md
-          git commit -m "docs(bot): updated README file with new content"
-
-  push_changes_job:
-    runs-on: ubuntu-latest
-    needs: [commit_readme_job, create_github_release_job]
-    steps:
-      - name: Push Changes to GitHub
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
+            You can download the latest version by [clicking here](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf)
