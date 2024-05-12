@@ -45,13 +45,16 @@ jobs:
       
       - name: Create new README.md
         run: |  
-          echo "| Preview | Link |" >> README.md
-          echo "| Mail Version (with background) |" >> README.md
-          echo "| ---------- | ---------- |" >> README.md
-          echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
-          echo "| Printer Version (no background) |" >> README.md
-          echo "| ---------- | ---------- |" >> README.md
-          echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_1.png'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
+          echo "__Crédit :__" > README.md
+          echo "" >> README.md
+          
+          echo "- Many thanks to [Sina Atalay](https://github.com/sinaatalay) for [RenderCV](https://github.com/sinaatalay/rendercv) 🤝" >> README.md
+          echo "- Also made with $\LaTeX$, YAML and 🖤 by [c2tz](https://github.com/c2tz)" >> README.md
+          echo "" >> README.md
+          
+          echo "| Preview - click on it to download |" >> README.md
+          echo "| ---------- |" >> README.md
+          echo "| <a href="https://github.com/c2tz/cvv/releases/download/2024.05.12.18.54.36/Google_CV.pdf"><img src="https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png" alt="CV Preview"></a> |" >> README.md
       
       - name: Commit README.md
         run: |
