@@ -1,14 +1,16 @@
 # Google's CV
 
-- Phone: +33 6 43 83 04 03
-- Email: [c2tz@pm.me](mailto:c2tz@pm.me)
-- Location: Artiguelouv
+- Phone: +90 541 999 99 99
+- Email: [youremail@yourdomain.com](mailto:youremail@yourdomain.com)
+- Location: Your Location
 - Website: [yourwebsite.com](https://yourwebsite.com/)
+- LinkedIn: [yourusername](https://linkedin.com/in/yourusername)
+- GitHub: [yourusername](https://github.com/yourusername)
 
 
 # Summary
 
-Google is an example resume to showcase the capabilities of the open-source LaTeX CV generator, [RenderCV](https://github.com/sinaatalay/rendercv). A substantial part of the content is taken from [here](https://www.careercup.com/resume), where a *clean and tidy CV* pattern is proposed by **Gayle L. McDowell**.
+This is an example resume to showcase the capabilities of the open-source LaTeX CV generator, [RenderCV](https://github.com/sinaatalay/rendercv). A substantial part of the content is taken from [here](https://www.careercup.com/resume), where a *clean and tidy CV* pattern is proposed by **Gayle L. McDowell**.
 
 # Education
 
@@ -51,6 +53,12 @@ Google is an example resume to showcase the capabilities of the open-source LaTe
 - June 2003 to Aug. 2003 
 - WA, USA 
 - Promoted to Lead Student Ambassador in the Fall of 2004, supervised 10 - 15 Student Ambassadors.
+
+# Publications
+
+## Magneto-Thermal Thin Shell Approximation for 3D Finite Element Analysis of No-Insulation Coils ([10.1109/TASC.2023.3340648](https://doi.org/10.1109/TASC.2023.3340648))
+- Jan. 2004
+- Albert Smith, Google, Jane Derry, Harry Tom, Frodo Baggins
 
 # Projects
 
