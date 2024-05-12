@@ -61,12 +61,11 @@ jobs:
       
       - name: Create new README.md
         run: |  
-          echo "" > README.md  # Add empty line for seperate
           echo "| Preview | Link |" >> README.md
           echo "| ---------- | ---------- |" >> README.md
           echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
           echo "| ---------- | ---------- |" >> README.md
-          echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_1.png'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) 
+          echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_1.png'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) >> README.md
       
       - name: Commit README.md
         run: |
