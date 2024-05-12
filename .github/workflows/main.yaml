@@ -46,8 +46,10 @@ jobs:
       - name: Create new README.md
         run: |  
           echo "| Preview | Link |" >> README.md
+          echo "| Mail Version (with background) |" >> README.md
           echo "| ---------- | ---------- |" >> README.md
           echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
+          echo "| Printer Version (no background) |" >> README.md
           echo "| ---------- | ---------- |" >> README.md
           echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_1.png'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
       
@@ -72,9 +74,12 @@ jobs:
           files: ./rendercv_output/*.pdf
           body: |
             CV updated on **${{ env.CHANGELOG }}**.
+            ---
             You can download the latest version by [clicking here](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf).
             
             ### Notes : 
             The build date indicated on the CV and the release date may be slightly different because there is a delay between the time I generate my CV (locally) and the time I publish it on GitHub.
+            
             Version and tag names are generated automatically based on the commit date and time, there aren't used for version management purposes.
+            
             I don't use the changelog here to keep you informed of any changes I make. To find out more about this, see the [commit history](https://github.com/c2tz/cvv/commits/main/).
