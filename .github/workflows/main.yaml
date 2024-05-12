@@ -22,21 +22,6 @@ jobs:
           echo "CHANGELOG=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
           echo "NAME=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
           echo "TAG=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
-          
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@master
-        with:
-          name: '${{ env.NAME }}'
-          tag_name: '${{ env.TAG }}'
-          files: ./rendercv_output/*.pdf
-          body: |
-            CV updated on **${{ env.CHANGELOG }}**.
-            You can download the latest version by [clicking here](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf).
-            
-            ### Notes : 
-            The build date indicated on the CV and the release date may be slightly different because there is a delay between the time I generate my CV (locally) and the time I publish it on GitHub.
-            Version and tag names are generated automatically based on the commit date and time, there aren't used for version management purposes.
-            I don't use the changelog here to keep you informed of any changes I make. To find out more about this, see the [commit history](https://github.com/c2tz/cvv/commits/main/).
       
       - name: Update Packages
         run: sudo apt-get update --fix-missing && sudo apt install ghostscript
@@ -65,7 +50,7 @@ jobs:
           echo "| ---------- | ---------- |" >> README.md
           echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
           echo "| ---------- | ---------- |" >> README.md
-          echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_1.png'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) >> README.md
+          echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_1.png'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
       
       - name: Commit README.md
         run: |
@@ -73,6 +58,25 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add README.md
           git commit -m "docs(bot): updated README file with new content"
+          
+  cv_releasing:
+    runs-on: ubuntu-latest
+    needs: cv_processing
+    steps:
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@master
+        with:
+          name: '${{ env.NAME }}'
+          tag_name: '${{ env.TAG }}'
+          files: ./rendercv_output/*.pdf
+          body: |
+            CV updated on **${{ env.CHANGELOG }}**.
+            You can download the latest version by [clicking here](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf).
+            
+            ### Notes : 
+            The build date indicated on the CV and the release date may be slightly different because there is a delay between the time I generate my CV (locally) and the time I publish it on GitHub.
+            Version and tag names are generated automatically based on the commit date and time, there aren't used for version management purposes.
+            I don't use the changelog here to keep you informed of any changes I make. To find out more about this, see the [commit history](https://github.com/c2tz/cvv/commits/main/).
       
       - name: Push Changes to GitHub
         uses: ad-m/github-push-action@master
