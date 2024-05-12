@@ -1,7 +1,7 @@
 # Google's CV
 
 - Phone: +90 541 999 99 99
-- Email: [youremail@yourdomain.com](mailto:youremail@yourdomain.com)
+- Email: [youremail@domain.com](mailto:youremail@domain.com)
 - Location: Your Location
 - Website: [yourwebsite.com](https://yourwebsite.com/)
 - LinkedIn: [yourusername](https://linkedin.com/in/yourusername)
