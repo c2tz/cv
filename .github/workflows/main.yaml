@@ -46,7 +46,7 @@ jobs:
           sudo sed -i 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/; s/name="height" value="10KP"/name="height" value="128Kp"/; s/name="width" value="10KP"/name="width" value="128Kp"/; s/name="map" value="512MiB"/name="map" value="4GiB"/; s/name="memory" value="256MiB"/name="memory" value="2GiB"/' /etc/ImageMagick-6/policy.xml
       
       - name: Convert PDF to PNG
-        run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 25% -quality 50 cv_preview_%d.png
+        run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 10% -quality 50 cv_preview_%d.png
 
       - name: Commit PNG Files
         run: |
@@ -61,11 +61,11 @@ jobs:
       
       - name: Create new README.md
         run: |  
-          echo "Welcome to my CV repository!" > README.md
-          echo "" >> README.md  # Ajouter une ligne vide comme séparation
+          echo "<center>Welcome to my CV repository!</center>" > README.md
+          echo "" >> README.md  # Add empty line for seperate
           echo "| Preview | Link |" >> README.md
           echo "| ---------- | ---------- |" >> README.md
-          echo "| ![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)  | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
+          echo "| <img src='https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png' width='200' height='200'> | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
       
       - name: Commit README.md
         run: |
