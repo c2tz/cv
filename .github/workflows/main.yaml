@@ -60,20 +60,12 @@ jobs:
           rm -f README.md
       
       - name: Create new README.md
-        run: |
+        run: |  
           echo "Welcome to my CV repository!" > README.md
           echo "" >> README.md  # Ajouter une ligne vide comme séparation
-          echo "You can [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf)." >> README.md
-          echo "" >> README.md
-          echo "![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)" >> README.md
-         
-          echo "Welcome to my CV repository!" > README.md
-          echo "" >> README.md  # Ajouter une ligne vide comme séparation
-          echo "| Colonne 1 | Colonne 2 |" >> README.md
+          echo "| Preview | Link |" >> README.md
           echo "| ---------- | ---------- |" >> README.md
-          echo "| Texte 1   | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
-          echo "" >> README.md
-          echo "![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)" >> README.md
+          echo "| ![Classic Theme Example of RenderCV](https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png)  | [download it](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf) |" >> README.md
       
       - name: Commit README.md
         run: |
