@@ -47,7 +47,9 @@ jobs:
       
       - name: Remove existing README.md
         run: |
-          rm -f README.md
+          git rm README.md
+          git commit -m "docs(bot): remove existing README file"
+          git push
       
       - name: Create new README.md
         run: |  
