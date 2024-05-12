@@ -9,6 +9,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Fetch and checkout main branch
+        run: |
+          git fetch origin main
+          git checkout main
+
       - name: Upload CV Artifact
         uses: actions/upload-artifact@v4
         with:
@@ -38,12 +43,6 @@ jobs:
           git config --local user.name "github-actions[bot]"
           git add *.png
           git commit -m "docs(bot): updated preview images"
-
-      - name: Push Changes to GitHub (PNG)
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: ${{ github.ref }}
       
       - name: Remove existing README.md
         run: |
@@ -69,7 +68,7 @@ jobs:
           git add README.md
           git commit -m "docs(bot): updated README file with new content"
 
-      - name: Push Changes to GitHub (README.md)
+      - name: Push Changes to GitHub
         uses: ad-m/github-push-action@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
