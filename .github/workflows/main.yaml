@@ -62,7 +62,7 @@ jobs:
           
           echo "| Preview - click on it to download |" >> README.md
           echo "| ---------- |" >> README.md
-          echo "| <a href="https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf"><img src="https://raw.githubusercontent.com/c2tz/cvv/main/cv_preview_0.png" alt="CV Preview"></a> |" >> README.md
+          echo "| <a href="https://github.com/c2tz/cv/releases/download/${{ env.NAME }}/Google_CV.pdf"><img src="https://raw.githubusercontent.com/c2tz/cv/main/cv_preview_0.png" alt="CV Preview"></a> |" >> README.md
       
       - name: Commit README.md
         run: |
@@ -87,7 +87,7 @@ jobs:
           body: |
             CV updated on **${{ env.CHANGELOG }}**.
             ---
-            You can download the latest version by [clicking here](https://github.com/c2tz/cvv/releases/download/${{ env.NAME }}/Google_CV.pdf).
+            You can download the latest version by [clicking here](https://github.com/c2tz/cv/releases/download/${{ env.NAME }}/Google_CV.pdf).
             
             ### Notes : 
             The build date indicated on the CV and the release date may be slightly different because there is a delay between the time I generate my CV (locally) and the time I publish it on GitHub.
