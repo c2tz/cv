@@ -1,0 +1,98 @@
+name: Process and release CV Files
+
+on: [pull_request, push]
+jobs:
+  processing:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Fetch and checkout main branch
+        run: |
+          git fetch origin main
+          git checkout main
+          git push
+
+      - name: Upload CV Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CV.pdf
+          path: ./rendercv_output/*.pdf
+          retention-days: 9
+
+      - name: Set Environment Variables
+        run: |
+          echo "CHANGELOG=$(TZ=":Europe/Paris" date +'%A, %d %B %Y %T %Z')" >> $GITHUB_ENV
+          echo "NAME=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+          echo "TAG=$(TZ=":Europe/Paris" date +'%Y.%m.%d.%H.%M.%S')" >> $GITHUB_ENV
+      
+      - name: Update Packages
+        run: sudo apt-get update --fix-missing && sudo apt install ghostscript
+
+      - name: Modify ImageMagick Policy
+        run: |
+          sudo sed -i 's/rights="none" pattern="PDF"/rights="read|write" pattern="PDF"/; s/name="height" value="10KP"/name="height" value="128Kp"/; s/name="width" value="10KP"/name="width" value="128Kp"/; s/name="map" value="512MiB"/name="map" value="4GiB"/; s/name="memory" value="256MiB"/name="memory" value="2GiB"/' /etc/ImageMagick-6/policy.xml
+      
+      - name: Convert PDF to PNG
+        run: convert -density 900 -alpha off ./rendercv_output/*.pdf -resize 15% -quality 50 cv_preview_%d.png
+
+      - name: Commit PNG Files
+        run: |
+          git config --local user.email "action[bot]@github.com"
+          git config --local user.name "github-actions[bot]"
+          git add *.png
+          git commit -m "docs(bot): updated preview images"
+      
+      - name: Remove existing README.md
+        run: |
+          git rm README.md
+          git commit -m "docs(bot): remove existing README file"
+          git push
+      
+      - name: Create new README.md
+        run: |  
+          echo "__Crédit :__" > README.md
+          echo "" >> README.md
+          
+          echo "- Many thanks to [Sina Atalay](https://github.com/sinaatalay) for [RenderCV](https://github.com/sinaatalay/rendercv) 🤝" >> README.md
+          echo "- Also made with $\LaTeX$, YAML and 🖤 by [c2tz](https://github.com/c2tz)" >> README.md
+          echo "" >> README.md
+          
+          echo "| Preview - click on it to download |" >> README.md
+          echo "| ---------- |" >> README.md
+          echo "| <a href="https://github.com/c2tz/cv/releases/download/${{ env.NAME }}/Google_CV.pdf"><img src="https://raw.githubusercontent.com/c2tz/cv/main/cv_preview_0.png" alt="CV Preview"></a> |" >> README.md
+      
+      - name: Commit README.md
+        run: |
+          git config --local user.email "action[bot]@github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md
+          git commit -m "docs(bot): updated README file with new content"
+
+      - name: Push Changes to GitHub
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ github.ref }}
+          force: true
+          
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@master
+        with:
+          name: '${{ env.NAME }}'
+          tag_name: '${{ env.TAG }}'
+          files: ./rendercv_output/*.pdf
+          body: |
+            CV updated on **${{ env.CHANGELOG }}**.
+            ---
+            You can download the latest version by [clicking here](https://github.com/c2tz/cv/releases/download/${{ env.NAME }}/Google_CV.pdf).
+            
+            ### Notes : 
+            The build date indicated on the CV and the release date may be slightly different because there is a delay between the time I generate my CV (locally) and the time I publish it on GitHub.
+            
+            Version and tag names are generated automatically based on the commit date and time, there aren't used for version management purposes.
+            
+            I don't use the changelog here to keep you informed of any changes I make. To find out more about this, see the [commit history](https://github.com/c2tz/cv/commits/main/?author=c2tz).
+            
