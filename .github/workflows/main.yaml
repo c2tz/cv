@@ -53,13 +53,10 @@ jobs:
       
       - name: Create new README.md
         run: |  
-          echo "__Crédit :__" > README.md
+          echo "__Clément TAILLIEZ CV__" > README.md
           echo "" >> README.md
-          
-          echo "- Many thanks to [Sina Atalay](https://github.com/sinaatalay) for [RenderCV](https://github.com/sinaatalay/rendercv) 🤝" >> README.md
-          echo "- Also made with $\LaTeX$, YAML and 🖤 by [c2tz](https://github.com/c2tz)" >> README.md
+          echo "Note : remember to clear your cache if the release and preview dates don't match, as this means that the image hasn't been updated." > README.md
           echo "" >> README.md
-          
           echo "| Preview - click on it to download |" >> README.md
           echo "| ---------- |" >> README.md
           echo "| <a href="https://github.com/c2tz/cv/releases/download/${{ env.NAME }}/Google_CV.pdf"><img src="https://raw.githubusercontent.com/c2tz/cv/main/cv_preview_0.png" alt="CV Preview"></a> |" >> README.md
