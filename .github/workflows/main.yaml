@@ -114,16 +114,16 @@ jobs:
           git commit -m "docs(bot): updated png and readme with new content"
           git push
       
-      - name: Publish release
-        uses: softprops/action-gh-release@v2
-        with:
-          name: ${{ env.RELEASE_NAME }}
-          tag_name: ${{ env.RELEASE_NAME }}
-          body: |
-            **CV Update**  
-            Generated: ${{ env.CHANGELOG }}  
-            Version: ${{ env.RELEASE_NAME }}
-          files: ./out/CV_NAME.pdf
+#      - name: Publish release
+#        uses: softprops/action-gh-release@v2
+#        with:
+#          name: ${{ env.RELEASE_NAME }}
+#          tag_name: ${{ env.RELEASE_NAME }}
+#          body: |
+#            **CV Update**  
+#            Generated: ${{ env.CHANGELOG }}  
+#            Version: ${{ env.RELEASE_NAME }}
+#          files: ./out/CV_NAME.pdf
 
   cleanup:
     needs: deploy
