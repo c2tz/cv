@@ -1,8 +1,8 @@
 name: Compile and Deploy PDF
 
 on:
-#  push:
-#    branches: [main]
+  push:
+    branches: [develop]
   workflow_dispatch:
 
 permissions:
@@ -53,14 +53,14 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout main branch
+      - name: Checkout develop branch
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: develop
           fetch-depth: 0
 
       - name: Sync workspace
-        run: git pull origin main
+        run: git pull origin develop
 
       - name: Setup variables
         run: |
@@ -105,7 +105,7 @@ jobs:
           echo "" >> README.md
           echo "| Preview - click on it to download |" >> README.md
           echo "| ---------- |" >> README.md
-          echo "| <a href="https://github.com/c2tz/cv/releases/download/${{ env.RELEASE_NAME }}/CV_NAME.pdf"><img src="https://raw.githubusercontent.com/c2tz/cv/main/CV_NAME.png" alt="CV Preview"></a> |" >> README.md
+          echo "| <a href="https://github.com/c2tz/cv/releases/download/${{ env.RELEASE_NAME }}/CV_NAME.pdf"><img src="https://raw.githubusercontent.com/c2tz/cv/develop/CV_NAME.png" alt="CV Preview"></a> |" >> README.md
       
       - name: Commit README and png
         run: |
@@ -114,16 +114,16 @@ jobs:
           git commit -m "docs(bot): updated png and readme with new content"
           git push
       
-#      - name: Publish release
-#        uses: softprops/action-gh-release@v2
-#        with:
-#          name: ${{ env.RELEASE_NAME }}
-#          tag_name: ${{ env.RELEASE_NAME }}
-#          body: |
-#            **CV Update**  
-#            Generated: ${{ env.CHANGELOG }}  
-#            Version: ${{ env.RELEASE_NAME }}
-#          files: ./out/CV_NAME.pdf
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          name: ${{ env.RELEASE_NAME }}
+          tag_name: ${{ env.RELEASE_NAME }}
+          body: |
+            **CV Update**  
+            Generated: ${{ env.CHANGELOG }}  
+            Version: ${{ env.RELEASE_NAME }}
+          files: ./out/CV_NAME.pdf
 
   cleanup:
     needs: deploy
@@ -132,7 +132,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
       with:
-        ref: main
+        ref: develop
         fetch-depth: 0
 
     - name: Configure Git
@@ -147,7 +147,7 @@ jobs:
         # Recrée un seul commit combiné
         git commit -m "🔄 Full update (PDF + preview + README) [bot workflow]" --no-verify
     - name: Force push cleaned history
-      run: git push --force origin HEAD:main
+      run: git push --force origin HEAD:develop
 
     - name: Verify history
       run: git log --oneline -n 3
