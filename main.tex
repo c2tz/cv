@@ -1,4 +1,4 @@
-\documentclass[10pt, a4paper]{article}
+\documentclass[11pt, a4paper]{article}
 
 % Packages:
 \usepackage[
@@ -19,9 +19,9 @@
 \usepackage{fontawesome5} % for using icons
 \usepackage{amsmath} % for math
 \usepackage[
-    pdftitle={CV},
-    pdfauthor={Clément Tailliez},
-    pdfcreator={Clément Tailliez},
+    pdftitle={CV - TAILLIEZ Clément},
+    pdfauthor={TAILLIEZ Clément},
+    pdfcreator={TAILLIEZ Clément},
     colorlinks=true,
     urlcolor=primaryColor
 ]{hyperref} % for links, metadata and bookmarks
@@ -35,6 +35,10 @@
 \usepackage{needspace} % for avoiding page brake right after the section title
 \usepackage{iftex} % check if engine is pdflatex, xetex or luatex
 \usepackage{datetime2} % for info about updt in footer
+% \usepackage{tikz} % not in use for now
+\DTMsetstyle{default}
+\DTMsetdatestyle{ddmmyyyy}
+\DTMsetup{datesep=/,hourminsep=h,minsecsep=:}
 
 % Ensure that generate pdf is machine readable/ATS parsable:
 \ifPDFTeX
@@ -180,63 +184,61 @@
 
         \normalsize
         
-        \mbox{\hrefWithoutArrow{tel:+33643830403}{{\footnotesize\faPhone*}\hspace*{0.13cm}+33 6 43 83 04 03}}%
-        \kern 0.25 cm%
-        \AND%
-        \kern 0.25 cm%
-        \mbox{\hrefWithoutArrow{mailto:ctailliez@cta.li}{{\footnotesize\faEnvelope}\hspace*{0.13cm}ctailliez@cta.li}}%
-        \kern 0.25 cm%
-        \AND%
-        \kern 0.25 cm        \mbox{{\footnotesize\faMapMarker*}\hspace*{0.13cm}\hrefWithoutArrow{https://osm.org/go/b~vJaW6?relation=2195069}{Artiguelouve (64)}}%
-        \kern 0.25 cm%
-        \AND%
-        %\kern 0.25 cm
-        %\mbox{\hrefWithoutArrow{https://yourwebsite.com/}{{\footnotesize\faLink}\hspace*{0.13cm}yourwebsite.com}}%
-        %\kern 0.25 cm%
-        %\AND%
-        %\kern 0.25 cm%
-        %\mbox{\hrefWithoutArrow{https://linkedin.com/in/yourusername}{{\footnotesize\faLinkedinIn}\hspace*{0.13cm}yourusername}}%
-        %\kern 0.25 cm%
-        %\AND%
-        \kern 0.25 cm%
-        \mbox{{{\footnotesize\faCarSide}\hspace*{0.13cm}Permis B}}%
+        \mbox{\hrefWithoutArrow{tel:+33643830403}{{\footnotesize\faPhone*}\hspace*{0.13cm}+33 6 43 83 04 03}}
+        \kern 0.25 cm
+        \AND
+        \kern 0.25 cm
+        \mbox{\hrefWithoutArrow{mailto:ct@cta.li}{{\footnotesize\faEnvelope}\hspace*{0.13cm}ct@cta.li}}
+        \AND
+        \kern 0.25 cm
+        \AND
+        \kern 0.25 cm
+        \mbox{{\footnotesize\faMapMarker*}\hspace*{0.13cm}\hrefWithoutArrow{https://osm.org/go/b~vJaW6?relation=2195069}{Artiguelouve (64)}}
+        \kern 0.25 cm
+        \AND
+        \kern 0.25 cm
+        \mbox{{{\footnotesize\faCarSide}\hspace*{0.13cm}Permis B}}
+        \kern 0.25 cm
+        \AND
+        \kern 0.25 cm
+        \mbox{{{\footnotesize\faBirthdayCake}\hspace*{0.13cm}23 ans}}
     \end{header}
 
     \vspace{0.3 cm - 0.3 cm}
 
-    \section{Expériences Professionn}
-     
-        \begin{threecolentry}{\textbf{BTS}}{
-            Sept. 2019 – Juil. 2021
+    % === Diplômes et formations === %
+
+    \section{Diplômes, Formations}
+
+        % === BTS === %
+        
+        \begin{threecolentry}{\vspace{.4 mm}\textbf{BTS}}{
+            Sept. 2019 $ \rightharpoonup $ Juil 2021 \\
+            Lycée St-John-Perse \\
             Pau (64)
         }
-            \textbf{Lycée St John Perse}, Service Informatique aux Organisations \\
-            Option Réseau Infrastructure et Système Communiquant
+            \textbf{SIO} Option Réseau Infrastructure \& Système Communiquant
             \begin{highlights}
-                \item GPA: 3.9/4.0 (\href{https://example.com}{a link to somewhere})
-                \item \textbf{Coursework:} Computer Architecture, Comparison of Learning Algorithms, Computational Theory
+		          \item Réseau : Asterisk, GLPI (Fusion, OCS), HAProxy, IPTable, LAMP, MicroTik, NextCloud, PFSense, Proxmox, Radius, Zentyal 
+		        \item Développement : Bash, PHP, PowerShell, Python, SQL, XML
             \end{highlights}
         \end{threecolentry}
 
-
-    \section{Experience}
-
-
         \vspace{0.2 cm}
 
-        \begin{twocolentry}{
-            Redmond, WA
-        
-        June 2003 – Aug 2003
+        % === BAC PRO === %
 
-        aaaaa
+        \begin{threecolentry}{\textbf{BAC Pro}}{
+            Sept. 2016 $ \rightharpoonup $ Juin 2019 \\
+            Lycée Guynemer \\
+            Oloron-Ste-Marie (64)
         }
-            \textbf{Microsoft}, Software Engineer Intern
+            \textbf{SN} Option Solutions d'Infrastructures Systèmes et Réseaux
             \begin{highlights}
-                \item Designed a UI for the VS open file switcher (Ctrl-Tab) and extended it to tool windows
-                \item Created a service to provide gradient across VS and VS add-ins, optimizing its performance via caching
+                \item Réseau : bases (binaire, DHCP, DNS, IP, masque, SSH, TLD, trames, routes, VPN...), switch (Cisco, Dlink, Nortel, HP) Windows Server, Wireshark
+                \item  Développement : Batch, C++
             \end{highlights}
-        \end{twocolentry}
+        \end{threecolentry}
 
     % === Expériences Professionnelles === %
     
@@ -273,6 +275,36 @@
             \end{highlights}
         \end{twocolentry}
 
+        \vspace{0.2 cm}
+
+        % === Stages BTS === %
+
+        \begin{twocolentry}{
+            4 et 7 semaines \\
+            2 Stages \\
+            Serres-Castet (64)
+        }
+            \textbf{Crédit Agricole}, Stagiaire BTS \textbf{\textit{S}}ervice \textbf{\textit{I}}nformatique aux \textbf{\textit{O}}rganisations
+            \begin{highlights}
+                \item Du 22/02/21 au 09/04/21 : Créations documentations, dépannage n+2 agence (bureautique, PLV, scanner chèques, etc.), enrôlement phone, tab (airwatch), masterisation postes, scripts PowerShell.
+                \item Du 25/05/20 au 26/06/20 : Analyse d’export csv, json avec Excel, création de script batch, deploiement de poste (marimba), depannage salle de réunion et conférence (écran, pieuvre Jabra, projecteur).
+            \end{highlights}
+        \end{twocolentry}
+
+        \vspace{0.2 cm}
+
+        % === Stages BAC PRO === %
+        
+        \begin{twocolentry}{
+            25 semaines \\
+            6 Stages \\
+            \approx Pau
+        }
+            \textbf{Divers}, Stagiaire BAC PRO \textbf{\textit{S}}ystème \textbf{\textit{N}}umérique
+            \begin{highlights}
+                \item Scopelec, VBI Jurançon, le Département 64, Disi (DGFIP), Ville de Pau (service feu tricolore), Emmaüs : Aide, dépannages installations, principalement hardware.
+            \end{highlights}
+        \end{twocolentry}
 
     % === Compétences acquises === %
     
@@ -285,15 +317,14 @@
         \vspace{0.2 cm}
 
         \begin{onecolentry}
-            \textbf{Software:} Docker, DSM, Git, GrapheneOS, G Workspace, IDA Pro, Inkscape, Office 365, VScode
+            \textbf{Logiciels:} Docker, DSM, Git, GrapheneOS, G Workspace, IDA Pro, Inkscape, Office 365, VScode
         \end{onecolentry}
 
     % === Centre d'intérêt === %
 
     \section{Centre d'Intérêt}
-
         \begin{onecolentry}
-            Gaming, informatique (programmation \& réseau), musique.
+            Cyclisme, gaming, informatique (programmation \& réseau), musique.
         \end{onecolentry}
     
 \end{document}
