@@ -64,7 +64,7 @@
 \patchcmd{\ps@customFooterStyle}{\thepage}{
     \color{gray}\begin{minipage}{\textwidth}
         \centering % Center the text on minipage
-        \textit{\small Clément Tailliez - p.\thepage{} sur \pageref*{LastPage}}\\
+        \textit{\small CT - p.\thepage{} sur \pageref*{LastPage}}\\
         \textit{\small{maj : le }}%
         \textit{\small\textit\date{\today} à \DTMcurrenttime{}}
     \end{minipage}
@@ -161,6 +161,17 @@
     \par\kern\topsep
 } % new environment for the header
 
+\newcommand{\placelastupdatedtext}{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+    \put(
+        \LenToUnit{\paperwidth-2 cm-0.2 cm+0.05cm},
+        \LenToUnit{\paperheight-1.0 cm}
+    ){\vtop{{\null}\makebox[0pt][c]{
+        \small\color{gray}\textit{ver: 1.3}\hspace{\widthof{ver: 1.3}}
+    }}}%
+  }%
+}%
+
 % save the original href command in a new command:
 \let\hrefWithoutArrow\href
 
@@ -175,7 +186,7 @@
     }
     \newsavebox\ANDbox
     \sbox\ANDbox{}
-
+    \placelastupdatedtext
     \begin{header}
         \fontsize{26 pt}{26 pt}
         \textbf{Clément Tailliez}
@@ -233,7 +244,7 @@
             Lycée Guynemer \\
             Oloron-Ste-Marie (64)
         }
-            \textbf{SN} Option Solutions d'Infrastructures Systèmes et Réseaux
+            \textbf{SEN} Option Solutions d'Infrastructures Systèmes et Réseaux
             \begin{highlights}
                 \item Réseau : bases (binaire, DHCP, DNS, IP, masque, SSH, TLD, trames, routes, VPN...), switch (Cisco, Dlink, Nortel, HP) Windows Server, Wireshark
                 \item  Développement : Batch, C++
@@ -298,9 +309,9 @@
         \begin{twocolentry}{
             25 semaines \\
             6 Stages \\
-            \approx Pau
+            \approx Pau
         }
-            \textbf{Divers}, Stagiaire BAC PRO \textbf{\textit{S}}ystème \textbf{\textit{N}}umérique
+            \textbf{Divers}, Stagiaire BAC PRO \textbf{\textit{S}}ystème \textbf{\textit{É}}lectronique \textbf{\textit{N}}umérique
             \begin{highlights}
                 \item Scopelec, VBI Jurançon, le Département 64, Disi (DGFIP), Ville de Pau (service feu tricolore), Emmaüs : Aide, dépannages installations, principalement hardware.
             \end{highlights}
