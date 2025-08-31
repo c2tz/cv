@@ -1,5 +1,4 @@
  \documentclass[11pt, a4paper]{article}
-
 % Packages:
 \usepackage[
     ignoreheadfoot, % set margins without considering header and footer
@@ -63,11 +62,12 @@
 \makeatletter
 \let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
 \patchcmd{\ps@customFooterStyle}{\thepage}{
-    \color{gray}\begin{minipage}{\textwidth}
+    \color{darkgray}\begin{minipage}{\textwidth}
         \centering % Center the text on minipage
-        \textit{\small CT - p.\thepage{} sur \pageref*{LastPage}}\\
-        \textit{\small{maj : le }}%
-        \textit{\small\textit\date{\today} à \DTMcurrenttime{}}
+        \textrm{\footnotesize{Last update :}}
+        \textrm{\footnotesize{\textit\date{\today} at \DTMcurrenttime{} ·}}
+        \textrm{\footnotesize{\hrefWithoutArrow{https://github.com/c2tz/cv}{source code} [MIT License]}}
+        \textrm{\footnotesize · p.\thepage{} on \pageref*{LastPage}}
     \end{minipage}
 }{} {}
 \makeatother
@@ -192,7 +192,9 @@
         \kern 0.25 cm
         \AND
         \kern 0.25 cm
-    \mbox{{\footnotesize\faMapMarker*}\hspace*{0.13cm}\hrefWithoutArrow{https://osm.org/go/b~vJaW6?relation=2195069}{Artiguelouve (64)}}
+        \colorbox{gray}
+        {\mbox{\hrefWithoutArrow{https://osm.org/go/b~vJaW6?relation=2195069}
+        {\textcolor{gray}{{\footnotesize\faMapMarker*}\hspace*{0.13cm}{Artiguelouve (64)}}}}}
         \kern 0.25 cm
         \AND
         \kern 0.25 cm
@@ -246,7 +248,7 @@
         % === Tibco Services === %
         
         \begin{twocolentry}{
-            Jan. 2022 $ \rightharpoonup $ présent \\
+            Jan. 2022 $ \rightharpoonup $ Oct. 2025 \\
             CDI \\
             Pau
         }
