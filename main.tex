@@ -1,0 +1,329 @@
+ \documentclass[11pt, a4paper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=1.0 cm, % seperation between body and page edge from the top
+    bottom=2.0 cm, % seperation between body and page edge from the bottom
+    left=2.0 cm, % seperation between body and page edge from the left
+    right=2.0 cm, % seperation between body and page edge from the right
+    footskip=1.0 cm, % seperation between body and footer
+    % showframe % for debugging 
+]{geometry} % for adjusting page geometry
+\usepackage[explicit]{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\usepackage[svgnames]{xcolor} % for test
+\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={CV - TAILLIEZ Clément},
+    pdfauthor={TAILLIEZ Clément},
+    pdfcreator={TAILLIEZ Clément},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page brake right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+\usepackage{datetime2} % for info about updt in footer
+% \usepackage{tikz} % not in use for now
+\DTMsetstyle{default}
+\DTMsetdatestyle{ddmmyyyy}
+\DTMsetup{datesep=/,hourminsep=h,minsecsep=:}
+
+% Ensure that generate pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    \usepackage[T1]{fontenc}
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+
+% Use Roboto as default font
+\usepackage[sfdefault]{roboto}
+
+% Some settings:
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0.15cm} % set column seperation
+\makeatletter
+\let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
+\patchcmd{\ps@customFooterStyle}{\thepage}{
+    \color{gray}\begin{minipage}{\textwidth}
+        \centering % Center the text on minipage
+        \textit{\small CT - p.\thepage{} sur \pageref*{LastPage}}\\
+        \textit{\small{maj : le }}%
+        \textit{\small\textit\date{\today} à \DTMcurrenttime{}}
+    \end{minipage}
+}{} {}
+\makeatother
+\pagestyle{customFooterStyle}
+
+\titleformat{\section}{
+    % avoid page breaking right after the section title
+    \needspace{4\baselineskip}
+    % make the font size of the section title large and color it with the primary color
+    \Large\color{primaryColor}
+}{
+}{
+}{
+    % print bold title, give 0.15 cm space and draw a line of 0.8 pt thickness
+    % from the end of the title to the end of the body
+    \textbf{#1}\hspace{0.15cm}\titlerule[0.8pt]\hspace{-0.1cm}
+}[] % section title formatting
+
+\titlespacing{\section}{
+    % left space:
+    -1pt
+}{
+    % top space:
+    0.3 cm
+}{
+    % bottom space:
+    0.2 cm
+} % section title spacing
+
+% \renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$} % custom bullet points
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights
+
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % new environment for highlights for bullet entries
+
+
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{
+        0.2 cm + 0.00001 cm
+    }{
+        0.2 cm + 0.00001 cm
+    }
+}{
+    \end{adjustwidth}
+} % new environment for one column entries
+
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for two column entries
+
+\newenvironment{threecolentry}[3][]{
+    \onecolentry
+    \def\thirdColumn{#3}
+    \setcolumnwidth{1 cm, \fill, 4.5 cm}
+    \begin{paracol}{3}
+    {\raggedright #2} \switchcolumn
+}{
+    \switchcolumn \raggedleft \thirdColumn
+    \end{paracol}
+    \endonecolentry
+} % new environment for three column entries
+
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\color{primaryColor}\linespread{1.5}
+}{
+    \par\kern\topsep
+}
+\let\hrefWithoutArrow\href
+
+% new command for external links:
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
+
+
+\begin{document}
+    \newcommand{\AND}{\unskip
+        \cleaders\copy\ANDbox\hskip\wd\ANDbox
+        \ignorespaces
+    }
+    \newsavebox\ANDbox
+    \sbox\ANDbox{}
+%    \placelastupdatedtext
+    \begin{header}
+        \fontsize{26 pt}{26 pt}
+        \textbf{Clément Tailliez}
+
+        \vspace{0.3 cm}
+
+        \normalsize
+        
+        \colorbox{gray}{\mbox{\hrefWithoutArrow{tel:+33643830403}{\textcolor{gray}{\footnotesize\faPhone{} \hspace*{0.13cm}+33 6 43 83 04 03}}}}
+        \kern 0.25 cm
+        \AND
+        \kern 0.25 cm
+        \colorbox{gray}{\mbox{\hrefWithoutArrow{mailto:ctailliez@cta.li}{\textcolor{gray}{{\footnotesize\faEnvelope}\hspace*{0.13cm}ctailliez@cta.li}}}}
+        \AND
+        \kern 0.25 cm
+        \AND
+        \kern 0.25 cm
+    \mbox{{\footnotesize\faMapMarker*}\hspace*{0.13cm}\hrefWithoutArrow{https://osm.org/go/b~vJaW6?relation=2195069}{Artiguelouve (64)}}
+        \kern 0.25 cm
+        \AND
+        \kern 0.25 cm
+        \mbox{{{\footnotesize\faCarSide}\hspace*{0.13cm}Permis B}}
+        \kern 0.25 cm
+        \AND
+        \kern 0.25 cm
+        \mbox{{{\footnotesize\faBirthdayCake}\hspace*{0.13cm}23 ans}}
+    \end{header}
+
+    \vspace{0.3 cm - 0.3 cm}
+
+    % === Diplômes et formations === %
+
+    \section{Diplômes, Formations}
+
+        % === BTS === %
+        
+        \begin{threecolentry}{\vspace{.4 mm}\textbf{BTS}}{
+            Sept. 2019 $ \rightharpoonup $ Juil 2021 \\
+            Lycée St-John-Perse \\
+            Pau (64)
+        }
+            \textbf{SIO} option solutions d'infrastructure, systèmes et réseaux
+            \begin{highlights}
+		          \item Réseau : Asterisk, GLPI (Fusion, OCS), HAProxy, IPTable, LAMP, MicroTik, NextCloud, PFSense, Proxmox, Radius, Zentyal 
+		        \item Développement : Bash, PHP, PowerShell, Python, SQL, XML
+            \end{highlights}
+        \end{threecolentry}
+
+        \vspace{0.2 cm}
+
+        % === BAC PRO === %
+
+        \begin{threecolentry}{\textbf{BAC Pro}}{
+            Sept. 2016 $ \rightharpoonup $ Juin 2019 \\
+            Lycée Guynemer \\
+            Oloron-Ste-Marie (64)
+        }
+            \textbf{SEN} option réseaux informatiques et systèmes communicants
+            \begin{highlights}
+                \item Réseau : bases (binaire, DHCP, DNS, IP, masque, SSH, TLD, trames, routes, VPN...), switch (Cisco, Dlink, Nortel, HP) Windows Server, Wireshark
+                \item  Développement : Batch, C++
+            \end{highlights}
+        \end{threecolentry}
+
+    % === Expériences Professionnelles === %
+    
+    \section{Expériences Professionnelles}
+
+        % === Tibco Services === %
+        
+        \begin{twocolentry}{
+            Jan. 2022 $ \rightharpoonup $ présent \\
+            CDI \\
+            Pau
+        }
+            \textbf{Tibco Services}, Technicien Retail n+2 itinérant 
+            \begin{highlights}
+                \item Intervention \href{https://w.wiki/D3ur}{IMAC} \& \href{https://w.wiki/D3uh}{MCO} et projets secteur 64-65-32-40 pour: BPCE, CAPG, CCF, Covea, Generix, HubOne, InitSys, Macif, Nickel, Orange Business, Ortec, PMU, RCBT, Sephora, Tessi, THOM, U TECH, Yves Rocher...
+                \item Tâches: Assistance utilisateurs, déploiement, logistique, masterisation postes, remplacement (AP, bureautique, firewall, scan chèque, switch), retail (douchette, TPE, TPV...).
+            \end{highlights}
+        \end{twocolentry}
+
+        \vspace{0.2 cm} % seeing for reduce this 
+
+        % === DEFI Informatique === %
+
+        \begin{twocolentry}{
+            Juil. 2021 $ \rightharpoonup $ Jan. 2022 \\
+            CDD \\
+            Abos (64)
+        }
+            \textbf{DEFI Informatique}, Support Technique n+2 et supervision 
+            \begin{highlights}
+                \item Debug BDD (MS Access), dépannage et installation d'un PGI (Gescof), Mail (MX, DMARC, SPF),
+                % --- tricks for hyphénation --- %
+                sauvegarde Carbonite, scripting, traitements tickets (logiciel interne), VPS OVH, Zabbix.
+            \end{highlights}
+        \end{twocolentry}
+
+        \vspace{0.2 cm}
+
+        % === Stages BTS === %
+
+        \begin{twocolentry}{
+            4 et 7 semaines \\
+            2 Stages \\
+            Serres-Castet (64)
+        }
+            \textbf{Crédit Agricole}, Stagiaire BTS \textbf{\textit{S}}ervice \textbf{\textit{I}}nformatique aux \textbf{\textit{O}}rganisations
+            \begin{highlights}
+                \item Du 22/02/21 au 09/04/21 : Créations documentations, dépannage n+2 agence (bureautique, PLV, scanner chèques, etc.), enrôlement phone, tab (airwatch), masterisation postes, scripts PowerShell.
+                \item Du 25/05/20 au 26/06/20 : Analyse d’export csv et json avec Excel, création de script batch, deploiement de poste (marimba), depannage salle de réunion et conférence (écran, Jabra, projecteur).
+            \end{highlights}
+        \end{twocolentry}
+
+        \vspace{0.2 cm}
+
+        % === Stages BAC PRO === %
+        
+        \begin{twocolentry}{
+            25 semaines \\
+            6 Stages \\
+            \approx Pau
+        }
+            \textbf{Divers}, Stagiaire BAC PRO \textbf{\textit{S}}ystème \textbf{\textit{É}}lectronique \textbf{\textit{N}}umérique
+            \begin{highlights}
+                \item Scopelec, VBI Jurançon, le Département 64, Disi (DGFIP), Ville de Pau (service feux tricolores), Emmaüs : aide, dépannages installations, principalement hardware.
+            \end{highlights}
+        \end{twocolentry}
+
+    % === Compétences acquises === %
+    
+    \section{Compétences Acquises}
+        
+        \begin{onecolentry}
+            \textbf{Langages:} Assembleur, CSS, English B1 (intermediate), JavaScript, \textit{\LaTeX}
+        \end{onecolentry}
+
+        \vspace{0.2 cm}
+
+        \begin{onecolentry}
+            \textbf{Logiciels:} Docker, DSM, Git, GrapheneOS, G Workspace, IDA Pro, Inkscape, Office 365, VScode
+        \end{onecolentry}
+
+    % === Centre d'intérêt === %
+
+    \section{Centre d'Intérêt}
+        \begin{onecolentry}
+            Cyclisme, gaming, informatique (programmation \& réseau), musique.
+        \end{onecolentry}
+    
+\end{document}
