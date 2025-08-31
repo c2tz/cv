@@ -101,11 +101,11 @@ jobs:
       - name: Create new README.md
         run: |
           echo "" >> README.md
+          echo "" >> README.md
+          echo "Note : remember to clear your cache if the release and preview dates don't match, as this means that the image hasn't been updated." > README.md
           echo "| Preview - click on it to download |" >> README.md
           echo "| ---------- |" >> README.md
           echo "| <a href="https://github.com/c2tz/cv/releases/download/${{ env.RELEASE_NAME }}/CV_NAME.pdf"><img src="https://raw.githubusercontent.com/c2tz/cv/main/CV_NAME.png" alt="CV Preview"></a> |" >> README.md
-          echo "" >> README.md
-          echo "Note : remember to clear your cache if the release and preview dates don't match, as this means that the image hasn't been updated." > README.md
       - name: Commit README and png
         run: |
           git add CV_NAME.png
