@@ -22,8 +22,8 @@ jobs:
       - name: Configure Git
         run: |
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          git config --global user.email "95414249+c2tz@users.noreply.github.com"
-          git config --global user.name "c2tz"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
       
       - name: Clean old files
         run: |
@@ -37,7 +37,7 @@ jobs:
       - name: Generate timestamp
         id: timestamp
         run: |
-          BUILD_TIME=$(TZ=':Europe/Paris' date +'%Y-%m-%d_%H-%M-%S')
+          BUILD_TIME=$(TZ=':Europe/Paris' date +'%d-%m-%Y_%H-%M-%S')
           echo "build_time=$BUILD_TIME" >> $GITHUB_OUTPUT
           echo "BUILD_TIME=$BUILD_TIME" >> $GITHUB_ENV
       
@@ -89,7 +89,7 @@ jobs:
 
       - name: Configure Git identity
         run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           
       - name: Update repository
@@ -101,12 +101,11 @@ jobs:
       - name: Create new README.md
         run: |
           echo "" >> README.md
-          echo "Note : remember to clear your cache if the release and preview dates don't match, as this means that the image hasn't been updated." > README.md
-          echo "" >> README.md
           echo "| Preview - click on it to download |" >> README.md
           echo "| ---------- |" >> README.md
           echo "| <a href="https://github.com/c2tz/cv/releases/download/${{ env.RELEASE_NAME }}/CV_NAME.pdf"><img src="https://raw.githubusercontent.com/c2tz/cv/main/CV_NAME.png" alt="CV Preview"></a> |" >> README.md
-      
+          echo "" >> README.md
+          echo "Note : remember to clear your cache if the release and preview dates don't match, as this means that the image hasn't been updated." > README.md
       - name: Commit README and png
         run: |
           git add CV_NAME.png
@@ -138,14 +137,14 @@ jobs:
     - name: Configure Git
       run: |
         git config --global --add safe.directory "$GITHUB_WORKSPACE"
-        git config --global user.email "95414249+c2tz@users.noreply.github.com"
-        git config --global user.name "c2tz"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        git config --global user.name "github-actions[bot]"
     - name: Squash last 4 commits
       run: |
         # Réinitialise à l'avant-dernier commit +4
         git reset --soft HEAD~4
         # Recrée un seul commit combiné
-        git commit -m "🔄 Full update (PDF + preview + README) [bot workflow]" --no-verify
+        git commit -m "chore(workflow): full update (pdf + preview + readme)" --no-verify
     - name: Force push cleaned history
       run: git push --force origin HEAD:main
 
