@@ -43,8 +43,8 @@ jobs:
       
       - name: Rename and commit PDF
         run: |
-          mv main.pdf main$BUILD_TIME.pdf
-          git add main$BUILD_TIME.pdf
+          mv main.pdf main_$BUILD_TIME.pdf
+          git add main_$BUILD_TIME.pdf
           git commit -m 'feat: add new PDF version'
           git push
   
@@ -71,7 +71,7 @@ jobs:
       - name: Prepare assets
         run: |
           mkdir -p out
-          cp main$BUILD_TIME.pdf ./out/CV_NAME.pdf
+          cp main_$BUILD_TIME.pdf ./out/CV_TAILLIEZ_Clement.pdf
       
       - name: Configure ImageMagick
         run: |
@@ -85,7 +85,7 @@ jobs:
           /etc/ImageMagick-6/policy.xml
       
       - name: Generate preview
-        run: convert -verbose -density 300 -alpha off ./out/CV_NAME.pdf -resize 80% -quality 15 CV_NAME.png
+        run: convert -verbose -density 300 -alpha off ./out/CV_TAILLIEZ_Clement.pdf -resize 80% -quality 15 CV_TAILLIEZ_Clement.png
 
       - name: Configure Git identity
         run: |
@@ -94,7 +94,7 @@ jobs:
           
       - name: Update repository
         run: |
-          git add CV_NAME.png
+          git add CV_TAILLIEZ_Clement.png
           git commit -m 'feat: update preview png'
           git push
       
@@ -104,10 +104,10 @@ jobs:
           echo "" >> README.md
           echo "| Preview - click on it to download |" >> README.md
           echo "| ---------- |" >> README.md
-          echo "| <a href="https://github.com/c2tz/cv/releases/download/${{ env.RELEASE_NAME }}/CV_NAME.pdf"><img src="https://raw.githubusercontent.com/c2tz/cv/main/CV_NAME.png" alt="CV Preview"></a> |" >> README.md
+          echo "| <a href="https://github.com/c2tz/cv/releases/download/${{ env.RELEASE_NAME }}/CV_TAILLIEZ_Clement.pdf"><img src="https://raw.githubusercontent.com/c2tz/cv/main/CV_TAILLIEZ_Clement.png" alt="CV Preview"></a> |" >> README.md
       - name: Commit README and png
         run: |
-          git add CV_NAME.png
+          git add CV_TAILLIEZ_Clement.png
           git add README.md
           git commit -m "docs(bot): updated png and readme with new content"
           git push
@@ -121,7 +121,7 @@ jobs:
             **CV Update**  
             Generated: ${{ env.CHANGELOG }}  
             Version: ${{ env.RELEASE_NAME }}
-          files: ./out/CV_NAME.pdf
+          files: ./out/CV_TAILLIEZ_Clement.pdf
 
   cleanup:
     needs: deploy
