@@ -1,46 +1,29 @@
- \documentclass[11pt, a4paper]{article}
-% Packages:
-\usepackage[
-    ignoreheadfoot, % set margins without considering header and footer
-    top=1.0 cm, % seperation between body and page edge from the top
-    bottom=2.0 cm, % seperation between body and page edge from the bottom
-    left=2.0 cm, % seperation between body and page edge from the left
-    right=2.0 cm, % seperation between body and page edge from the right
-    footskip=1.0 cm, % seperation between body and footer
-    % showframe % for debugging 
-]{geometry} % for adjusting page geometry
-\usepackage[explicit]{titlesec} % for customizing section titles
-\usepackage{tabularx} % for making tables with fixed width columns
-\usepackage{array} % tabularx requires this
-\usepackage[dvipsnames]{xcolor} % for coloring text
-\usepackage[svgnames]{xcolor} % for test
-\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
-\usepackage{enumitem} % for customizing lists
-\usepackage{fontawesome5} % for using icons
-\usepackage{amsmath} % for math
-\usepackage[
-    pdftitle={CV - TAILLIEZ Clément},
-    pdfauthor={TAILLIEZ Clément},
-    pdfcreator={TAILLIEZ Clément},
-    colorlinks=true,
-    urlcolor=primaryColor
-]{hyperref} % for links, metadata and bookmarks
-\usepackage[pscoord]{eso-pic} % for floating text on the page
-\usepackage{calc} % for calculating lengths
-\usepackage{bookmark} % for bookmarks
-\usepackage{lastpage} % for getting the total number of pages
-\usepackage{changepage} % for one column entries (adjustwidth environment)
-\usepackage{paracol} % for two and three column entries
-\usepackage{ifthen} % for conditional statements
-\usepackage{needspace} % for avoiding page brake right after the section title
-\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
-\usepackage{datetime2} % for info about updt in footer
-% \usepackage{tikz} % not in use for now
-\DTMsetstyle{default}
-\DTMsetdatestyle{ddmmyyyy}
-\DTMsetup{datesep=/,hourminsep=h,minsecsep=:}
+\documentclass[11pt, a4paper]{article}
 
-% Ensure that generate pdf is machine readable/ATS parsable:
+% ---- package declaration ---- %
+\usepackage[ignoreheadfoot, top=1.0 cm, bottom=2.0 cm, left=2.0 cm, right=2.0 cm, footskip=1.0 cm]{geometry}
+\usepackage[explicit]{titlesec}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage[dvipsnames, svgnames]{xcolor}
+\usepackage[pdftitle={CV - TAILLIEZ Clément}, pdfauthor={TAILLIEZ Clément}, pdfcreator={TAILLIEZ Clément}, colorlinks=true, urlcolor=primaryColor]{hyperref}
+\usepackage[pscoord]{eso-pic}
+\usepackage{enumitem}
+\usepackage{fontawesome5}
+\usepackage{amsmath}
+\usepackage{calc}
+\usepackage{bookmark}
+\usepackage{lastpage}
+\usepackage{changepage}
+\usepackage{paracol}
+\usepackage{ifthen}
+\usepackage{needspace}
+\usepackage{iftex}
+\usepackage{datetime2}
+\usepackage[sfdefault]{roboto}
+\usepackage{luacode}
+
+% ---- for accessibility ---- %
 \ifPDFTeX
     \input{glyphtounicode}
     \pdfgentounicode=1
@@ -49,152 +32,124 @@
     \usepackage{lmodern}
 \fi
 
-% Use Roboto as default font
-\usepackage[sfdefault]{roboto}
+% ---- test base64 ---- %
+\begin{luacode*}
 
-% Some settings:
-\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
-\pagestyle{empty} % no header or footer
-\setcounter{secnumdepth}{0} % no section numbering
-\setlength{\parindent}{0pt} % no indentation
-\setlength{\topskip}{0pt} % no top skip
-\setlength{\columnsep}{0.15cm} % set column seperation
+local mime = require("mime")
+local lft = lua.get_functions_table()
+lft[#lft + 1] = function()
+    local str = token.scan_string()
+    tex.sprint(-2, (mime.b64(str)))
+end
+token.set_lua("BaseEncode", #lft, "global")
+lft[#lft + 1] = function()
+    local str = token.scan_string()
+    tex.sprint(-2, (mime.unb64(str)))
+end
+token.set_lua("BaseDecode", #lft, "global")
+
+\end{luacode*}
+
+% ---- adjustment ---- %
+\definecolor{primaryColor}{RGB}{0, 79, 144}
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt}
+\pagestyle{empty}
+\setcounter{secnumdepth}{0}
+\setlength{\parindent}{0pt}
+\setlength{\topskip}{0pt}
+\setlength{\columnsep}{0.15cm}
 \makeatletter
-\let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
+
+% ---- header env ---- %
+\newenvironment{header}{\setlength{\topsep}{0pt}\par\kern\topsep\centering\color{primaryColor}\linespread{1.5}}{\par\kern\topsep}\let\hrefWithoutArrow\href
+
+% ---- space for title ---- %
+\titleformat{\section}{\needspace{4\baselineskip}\Large\color{primaryColor}}{}{}{\textbf{#1}\hspace{0.15cm}\titlerule[0.8pt]\hspace{-0.1cm}}[]
+\titlespacing{\section}{-1pt}{0.3 cm}{0.2 cm}
+
+% ---- highlights env ---- %
+\newenvironment{highlights}{
+    \begin{itemize}
+        [topsep=0.10 cm, parsep=0.10 cm, partopsep=0pt, itemsep=0pt, leftmargin=0.4 cm + 10pt]}{
+    \end{itemize}}
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}
+        [topsep=0.10 cm, parsep=0.10 cm, partopsep=0pt, itemsep=0pt, leftmargin=10pt]}{
+    \end{itemize}}
+
+% ---- column entry env ---- %
+%1
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}
+        {0.2 cm + 0.00001 cm}{0.2 cm + 0.00001 cm}}{
+    \end{adjustwidth}
+}
+%2
+\newenvironment{twocolentry}[2][]{\onecolentry\def\secondColumn{#2}\setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}}{
+        \switchcolumn\raggedleft\secondColumn
+    \end{paracol}
+\endonecolentry
+}
+%3
+\newenvironment{threecolentry}[3][]{\onecolentry\def\thirdColumn{#3}\setcolumnwidth{1 cm, \fill, 4.5 cm}
+    \begin{paracol}{3}
+        {\raggedright #2}\switchcolumn}{\switchcolumn\raggedleft\thirdColumn
+    \end{paracol}
+\endonecolentry
+}
+
+% ---- footer ---- %
+\let\ps@customFooterStyle\ps@plain
+\DTMsetstyle{default}
+\DTMsetdatestyle{ddmmyyyy}
+\DTMsetup{datesep=/,hourminsep=h,minsecsep=:}
 \patchcmd{\ps@customFooterStyle}{\thepage}{
-    \color{darkgray}\begin{minipage}{\textwidth}
-        \centering % Center the text on minipage
+    \begin{minipage}
+        {\textwidth}\centering\color{darkgray}
         \textrm{\footnotesize{Last update :}}
         \textrm{\footnotesize{\textit\date{\today} at \DTMcurrenttime{} ·}}
         \textrm{\footnotesize{\hrefWithoutArrow{https://github.com/c2tz/cv}{source code} [MIT License]}}
         \textrm{\footnotesize · p.\thepage{} on \pageref*{LastPage}}
-    \end{minipage}
-}{} {}
+    \end{minipage}}{}{}
 \makeatother
 \pagestyle{customFooterStyle}
 
-\titleformat{\section}{
-    % avoid page breaking right after the section title
-    \needspace{4\baselineskip}
-    % make the font size of the section title large and color it with the primary color
-    \Large\color{primaryColor}
-}{
-}{
-}{
-    % print bold title, give 0.15 cm space and draw a line of 0.8 pt thickness
-    % from the end of the title to the end of the body
-    \textbf{#1}\hspace{0.15cm}\titlerule[0.8pt]\hspace{-0.1cm}
-}[] % section title formatting
-
-\titlespacing{\section}{
-    % left space:
-    -1pt
-}{
-    % top space:
-    0.3 cm
-}{
-    % bottom space:
-    0.2 cm
-} % section title spacing
-
-% \renewcommand\labelitemi{$\vcenter{\hbox{\small$\bullet$}}$} % custom bullet points
-\newenvironment{highlights}{
-    \begin{itemize}[
-        topsep=0.10 cm,
-        parsep=0.10 cm,
-        partopsep=0pt,
-        itemsep=0pt,
-        leftmargin=0.4 cm + 10pt
-    ]
-}{
-    \end{itemize}
-} % new environment for highlights
-
-\newenvironment{highlightsforbulletentries}{
-    \begin{itemize}[
-        topsep=0.10 cm,
-        parsep=0.10 cm,
-        partopsep=0pt,
-        itemsep=0pt,
-        leftmargin=10pt
-    ]
-}{
-    \end{itemize}
-} % new environment for highlights for bullet entries
-
-
-\newenvironment{onecolentry}{
-    \begin{adjustwidth}{
-        0.2 cm + 0.00001 cm
-    }{
-        0.2 cm + 0.00001 cm
-    }
-}{
-    \end{adjustwidth}
-} % new environment for one column entries
-
-\newenvironment{twocolentry}[2][]{
-    \onecolentry
-    \def\secondColumn{#2}
-    \setcolumnwidth{\fill, 4.5 cm}
-    \begin{paracol}{2}
-}{
-    \switchcolumn \raggedleft \secondColumn
-    \end{paracol}
-    \endonecolentry
-} % new environment for two column entries
-
-\newenvironment{threecolentry}[3][]{
-    \onecolentry
-    \def\thirdColumn{#3}
-    \setcolumnwidth{1 cm, \fill, 4.5 cm}
-    \begin{paracol}{3}
-    {\raggedright #2} \switchcolumn
-}{
-    \switchcolumn \raggedleft \thirdColumn
-    \end{paracol}
-    \endonecolentry
-} % new environment for three column entries
-
-\newenvironment{header}{
-    \setlength{\topsep}{0pt}\par\kern\topsep\centering\color{primaryColor}\linespread{1.5}
-}{
-    \par\kern\topsep
-}
-\let\hrefWithoutArrow\href
-
-% new command for external links:
+% ---- href new cmd ---- %
 \renewcommand{\href}[2]{\hrefWithoutArrow{#1}{\ifthenelse{\equal{#2}{}}{ }{#2 }\raisebox{.15ex}{\footnotesize \faExternalLink*}}}
 
+% ---- header new cmd ---- %
+\newcommand{\AND}{\unskip\cleaders\copy\ANDbox\hskip\wd\ANDbox\ignorespaces}\newsavebox\ANDbox\sbox\ANDbox{}
 
+% ---- start document ---- %
 \begin{document}
-    \newcommand{\AND}{\unskip
-        \cleaders\copy\ANDbox\hskip\wd\ANDbox
-        \ignorespaces
-    }
-    \newsavebox\ANDbox
-    \sbox\ANDbox{}
-%    \placelastupdatedtext
+%   \placelastupdatedtext (that a legacy cmd replaced by footer)
     \begin{header}
         \fontsize{26 pt}{26 pt}
-        \textbf{Clément Tailliez}
-
+        \textbf{\BaseDecode{Q2zDqW1lbnQgVEFJTExJRVo=}}
+        
         \vspace{0.3 cm}
 
         \normalsize
-        
-        \colorbox{gray}{\mbox{\hrefWithoutArrow{tel:+33643830403}{\textcolor{gray}{\footnotesize\faPhone{} \hspace*{0.13cm}+33 6 43 83 04 03}}}}
-        \kern 0.25 cm
-        \AND
-        \kern 0.25 cm
-        \colorbox{gray}{\mbox{\hrefWithoutArrow{mailto:ctailliez@cta.li}{\textcolor{gray}{{\footnotesize\faEnvelope}\hspace*{0.13cm}ctailliez@cta.li}}}}
-        \AND
+%       Note : comment out where it says color GRAY to display sensitive information
+        \colorbox{gray}
+        {\mbox{\hrefWithoutArrow{\BaseDecode{dGVsOiszMzY0MzgzMDQwMw==}}{
+        \textcolor{gray}
+        {{\footnotesize\faPhone*}\hspace*{0.13cm}\BaseDecode{MDYgNDMgODMgMDQgMDM=}}}}}
         \kern 0.25 cm
         \AND
         \kern 0.25 cm
         \colorbox{gray}
-        {\mbox{\hrefWithoutArrow{https://osm.org/go/b~vJaW6?relation=2195069}
-        {\textcolor{gray}{{\footnotesize\faMapMarker*}\hspace*{0.13cm}{Artiguelouve (64)}}}}}
+        {\mbox{\hrefWithoutArrow{mailto:ctailliez@cta.li}{
+        \textcolor{gray}
+        {{\footnotesize\faEnvelope}\hspace*{0.13cm}ctailliez@cta.li}}}}
+        \kern 0.25 cm
+        \AND
+        \kern 0.25 cm
+        %\colorbox{gray}
+        {\mbox{\hrefWithoutArrow{https://osm.org/go/b~vJ1Ch-?relation=2753623}{
+        \textcolor{gray}
+        {{\footnotesize\faMapMarker*}\hspace*{0.13cm}\BaseDecode{UGF1ICg2NCk=}}}}}
         \kern 0.25 cm
         \AND
         \kern 0.25 cm
@@ -214,14 +169,14 @@
         % === BTS === %
         
         \begin{threecolentry}{\vspace{.4 mm}\textbf{BTS}}{
-            Sept. 2019 $ \rightharpoonup $ Juil 2021 \\
+            Sept. 2019 $ \rightharpoonup $ Juil. 2021 \\
             Lycée St-John-Perse \\
             Pau (64)
         }
             \textbf{SIO} option solutions d'infrastructure, systèmes et réseaux
             \begin{highlights}
-		          \item Réseau : Asterisk, GLPI (Fusion, OCS), HAProxy, IPTable, LAMP, MicroTik, NextCloud, PFSense, Proxmox, Radius, Zentyal 
-		        \item Développement : Bash, PHP, PowerShell, Python, SQL, XML
+		          \item Réseau : Asterisk, GLPI (Fusion, OCS), HAProxy, IPTable, LAMP, MicroTik, NextCloud, Proxmox, Radius
+		        \item Développement : Bash, Python, SQL
             \end{highlights}
         \end{threecolentry}
 
@@ -236,7 +191,7 @@
         }
             \textbf{SEN} option réseaux informatiques et systèmes communicants
             \begin{highlights}
-                \item Réseau : bases (binaire, DHCP, DNS, IP, masque, SSH, TLD, trames, routes, VPN...), switch (Cisco, Dlink, Nortel, HP) Windows Server, Wireshark
+                \item Réseau : bases (OSI, TCP/IP, IPv4-v6, DNS, DHCP, routage, VPN, HTTP-S, S-FTP, VLAN), switch (Cisco, Dlink, HP) Windows Server, Wireshark
                 \item  Développement : Batch, C++
             \end{highlights}
         \end{threecolentry}
@@ -254,8 +209,8 @@
         }
             \textbf{Tibco Services}, Technicien Retail n+2 itinérant 
             \begin{highlights}
-                \item Intervention \href{https://w.wiki/D3ur}{IMAC} \& \href{https://w.wiki/D3uh}{MCO} et projets secteur 64-65-32-40 pour: BPCE, CAPG, CCF, Covea, Generix, HubOne, InitSys, Macif, Nickel, Orange Business, Ortec, PMU, RCBT, Sephora, Tessi, THOM, U TECH, Yves Rocher...
-                \item Tâches: Assistance utilisateurs, déploiement, logistique, masterisation postes, remplacement (AP, bureautique, firewall, scan chèque, switch), retail (douchette, TPE, TPV...).
+                \item Intervention \href{https://w.wiki/D3ur}{IMAC} \& \href{https://w.wiki/D3uh}{MCO} et projets secteur 64-65 pour: BPCE, CAPG, Covea, Generix, HubOne, HSBC, InitSys, Macif, Nickel, OBS, Ortec, PMU, RCBT, Sephora, Tessi, THOM, U TECH, Yves Rocher...
+                \item Tâches: Assistance user, déploiement, logistique, masterisation, remplacement (AP, bureautique, firewall, scan chèque, switch), retail (douchette, TPE, TPV...).
             \end{highlights}
         \end{twocolentry}
 
@@ -270,9 +225,8 @@
         }
             \textbf{DEFI Informatique}, Support Technique n+2 et supervision 
             \begin{highlights}
-                \item Debug BDD (MS Access), dépannage et installation d'un PGI (Gescof), Mail (MX, DMARC, SPF),
-                % --- tricks for hyphénation --- %
-                sauvegarde Carbonite, scripting, traitements tickets (logiciel interne), VPS OVH, Zabbix.
+                \item BDD (MS Access), support d'un PGI (Gescof), Mail (MX, DMARC, SPF),
+                Carbonite, scripting, tickets (logiciel interne), OVH, Zabbix.
             \end{highlights}
         \end{twocolentry}
 
@@ -303,7 +257,7 @@
         }
             \textbf{Divers}, Stagiaire BAC PRO \textbf{\textit{S}}ystème \textbf{\textit{É}}lectronique \textbf{\textit{N}}umérique
             \begin{highlights}
-                \item Scopelec, VBI Jurançon, le Département 64, Disi (DGFIP), Ville de Pau (service feux tricolores), Emmaüs : aide, dépannages installations, principalement hardware.
+                \item Scopelec, VBI, le Département 64, Disi (DGFIP), Ville de Pau (service feux tricolores), Emmaüs : aide, dépannages installations, principalement hardware.
             \end{highlights}
         \end{twocolentry}
 
@@ -312,7 +266,7 @@
     \section{Compétences Acquises}
         
         \begin{onecolentry}
-            \textbf{Langages:} Assembleur, CSS, English B1 (intermediate), JavaScript, \textit{\LaTeX}
+            \textbf{Langages:} Assembleur, batch, CSS, English B1 (intermediate), JavaScript, {\LaTeX}, PowerShell (en cours)
         \end{onecolentry}
 
         \vspace{0.2 cm}
